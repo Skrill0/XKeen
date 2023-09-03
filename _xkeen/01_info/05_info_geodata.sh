@@ -1,20 +1,23 @@
 # Функция для проверки наличия и записи информации о базах geo
 info_geodata() {
-    if [ -e "$GEO_DIR/geodata_antizapret.dat" ]; then
-        GEO_EXISTS_GEODATA_ANTIZAPRET="installed"
+    # Проверяем наличие файла geodata_antizapret.dat
+    if [ -e "$geo_dir/geodata_antizapret.dat" ]; then
+        geo_exists_geodata_antizapret="installed"
     else
-        GEO_EXISTS_GEODATA_ANTIZAPRET="not_installed"
+        geo_exists_geodata_antizapret="not_installed"
     fi
 
-    if [ -e "$GEO_DIR/geodata_antifilter.dat" ]; then
-        GEO_EXISTS_GEODATA_ANTIFILTER="installed"
+    # Проверяем наличие файла geodata_antifilter.dat
+    if [ -e "$geo_dir/geodata_antifilter.dat" ]; then
+        geo_exists_geodata_antifilter="installed"
     else
-        GEO_EXISTS_GEODATA_ANTIFILTER="not_installed"
+        geo_exists_geodata_antifilter="not_installed"
     fi
 
-    if [ -e "$GEO_DIR/geodata_v2fly.dat" ]; then
-        GEO_EXISTS_GEODATA_V2FLY="installed"
+    # Проверяем наличие файла geodata_v2fly.dat
+    if [ -e "$geo_dir/geodata_v2fly.dat" ]; then
+        geo_exists_geodata_v2fly="installed"
     else
-        GEO_EXISTS_GEODATA_V2FLY="not_installed"
+        geo_exists_geodata_v2fly="not_installed"
     fi
 }

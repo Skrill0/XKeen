@@ -1,4 +1,5 @@
+# Удаление всех конфигураций xray
+
 delete_configs() {
-    # Удаляем все файлы .json из директории
-    find "$INSTALL_CONF_DIR" -name "*.json" -type f -delete
+    find "$install_conf_dir" -name "*.json" -type f -delete
 }

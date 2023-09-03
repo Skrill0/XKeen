@@ -1,8 +1,12 @@
+# Удаление временных файлов и директорий
 delete_tmp() {
-    
-    # Проверяем, существует ли папка xkeen
-    if [ -d "$TMP_DIR_GLOBAL/xkeen" ]; then
-        # Удаляем папку xkeen и её содержимое рекурсивно
-        rm -r "$TMP_DIR_GLOBAL/xkeen"
+    if [ -d "$tmp_dir_global/xkeen" ]; then
+        rm -r "$tmp_dir_global/xkeen"
     fi
+
+    if [ -f "$cron_dir/root.tmp" ]; then
+        rm "$cron_dir/root.tmp"
+    fi
+	
+	echo "Очистка временных файлов после Xkeen"
 }

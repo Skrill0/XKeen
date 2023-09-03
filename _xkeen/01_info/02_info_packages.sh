@@ -1,24 +1,36 @@
-#!/bin/sh
+# Проверяет наличие необходимых пакетов
 
-# Проверки наличия необходимых пакетов
 info_packages() {
     package_name="$1"
+    
+    # Проверяем, установлен ли пакет
     if opkg list-installed | grep -q "$package_name"; then
-        package_status="installed"
+        package_status="установлен"
     else
-        package_status="not_installed"
+        package_status="не установлен"
     fi
 }
 
-# Сохранение статусов
 info_packages "lscpu"
-INFO_PACKAGES_LSCPU=$package_status
+info_packages_lscpu=$package_status
 
 info_packages "curl"
-INFO_PACKAGES_CURL=$package_status
+info_packages_curl=$package_status
 
 info_packages "jq"
-INFO_PACKAGES_JQ=$package_status
+info_packages_jq=$package_status
 
 info_packages "libc"
-INFO_PACKAGES_LIBC=$package_status
+info_packages_libc=$package_status
+
+info_packages "libssp"
+info_packages_libssp=$package_status
+
+info_packages "librt"
+info_packages_librt=$package_status
+
+info_packages "libpthread"
+info_packages_libpthread=$package_status
+
+info_packages "ca-bundle"
+info_packages_cabundle=$package_status

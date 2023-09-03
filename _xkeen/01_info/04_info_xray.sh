@@ -1,11 +1,9 @@
-#!/bin/sh
-
-# Функция для проверки установки Xray
+# Функция для проверки установки xray
 
 info_xray() {
-    if [ -e "$INSTALL_DIR/xray" ]; then
-        XRAY_INSTALLED="installed"
+    if [ -e "$install_dir/xray" ]; then
+        xray_installed="installed"
     else
-        XRAY_INSTALLED="not_installed"
+        xray_installed="not_installed"
     fi
 }

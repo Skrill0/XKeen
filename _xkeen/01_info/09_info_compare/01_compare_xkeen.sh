@@ -1,13 +1,12 @@
-#!/bin/sh
-
-# Функция для сравнения версий Xkeen
+# Функция для сравнения версий Xkeen и сохранения результата в переменной
 info_compare_xkeen() {
-    # Сравнение версий и сохранение результата в переменной
-    if [ "$XKEEN_CURRENT_VERSION" = "$XKEEN_GITHUB_VERSION" ]; then
-        INFO_COMPARE_XKEEN="actual"
-    elif [ "$XKEEN_CURRENT_VERSION" \< "$XKEEN_GITHUB_VERSION" ]; then
-        INFO_COMPARE_XKEEN="update"
+    # Сравниваем текущую версию Xkeen с версией из GitHub
+    if [ "$xkeen_current_version" = "$xkeen_github_version" ]; then
+        info_compare_xkeen="actual" # Если версии совпадают, Xkeen актуален
+		
+    elif [ "$xkeen_current_version" \< "$xkeen_github_version" ]; then
+        info_compare_xkeen="update" # Если текущая версия меньше версии из GitHub, требуется обновление
     else
-        INFO_COMPARE_XKEEN="not_release"
+        info_compare_xkeen="not_release" # Если версия из GitHub меньше текущей версии (не выпущена), Xkeen не выпущен
     fi
 }

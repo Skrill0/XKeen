@@ -1,21 +1,21 @@
+# Удаление регистрации xray
 delete_register_xray() {
+    # Удаляем соответствующие записи из файла статуса opkg
+    sed -i -e '/package: xray/,/installed-time:/d' "/opt/lib/opkg/status"
     
-    # Используем sed для удаления записей пакетов
-    sed -i -e '/Package: xray/,/Installed-Time:/d' "/opt/lib/opkg/status"
-    
-    # Удаляем файлы xkeen.control, xkeen.list, xray.control, xray.list
-    if [ -f "$REGISTER_DIR/xray.control" ] || [ -f "$REGISTER_DIR/xray.list" ]; then
-        rm -f "$REGISTER_DIR/xray.control" "$REGISTER_DIR/xray.list"
+    # Удаляем файлы регистрации, если они существуют
+    if [ -f "$register_dir/xray.control" ] || [ -f "$register_dir/xray.list" ]; then
+        rm -f "$register_dir/xray.control" "$register_dir/xray.list"
     fi
 }
 
+# Удаление регистрации xkeen
 delete_register_xkeen() {
-	
-	# Используем sed для удаления записей пакетов
-    sed -i -e '/Package: xkeen/,/Installed-Time:/d' "/opt/lib/opkg/status"
+    # Удаляем соответствующие записи из файла статуса opkg
+    sed -i -e '/package: xkeen/,/installed-time:/d' "/opt/lib/opkg/status"
     
-    # Удаляем файлы xkeen.control, xkeen.list, xray.control, xray.list
-    if [ -f "$REGISTER_DIR/xkeen.control" ] || [ -f "$REGISTER_DIR/xkeen.list" ]; then
-        rm -f "$REGISTER_DIR/xkeen.control" "$REGISTER_DIR/xkeen.list"
+    # Удаляем файлы регистрации, если они существуют
+    if [ -f "$register_dir/xkeen.control" ] || [ -f "$register_dir/xkeen.list" ]; then
+        rm -f "$register_dir/xkeen.control" "$register_dir/xkeen.list"
     fi
 }

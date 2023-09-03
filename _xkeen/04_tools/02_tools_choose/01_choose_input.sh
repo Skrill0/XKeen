@@ -1,79 +1,83 @@
+# Функция для подтверждения пользователя с вариантами "yes" и "no"
 input_concordance() {
-    local prompt_message="$1"
-    local error_message="Пожалуйста, введите «yes» или «no»."
-    
+    local prompt_message="  $1"
+    local error_message="  Пожалуйста, введите «yes» или «no»"
+
     while true; do
-		echo 
-        read -r -p "$prompt_message" user_input
+        echo 
+        read -r -p "  $prompt_message" user_input
 
         case "$user_input" in
-            [Yy]|[Yy][Ee]|[Yy][Ee][Ss]|[Нн]|[Нн][Уу]|[Нн][Уу][Ыы]) return 0 ;;
-            [Nn]|[Nn][Oo]|[Тт]|[Тт][Щщ]) return 1 ;;
+            [yY]|[yY][eE]|[yY][eE][sS]|[нН]|[нН][уУ]|[нН][уУ][ыЫ]) return 0 ;;
+            [nN]|[nN][oO]|[тТ]|[тТ][щЩ]) return 1 ;;
             *)
-				echo 
-                echo "$error_message"
+                echo 
+                echo "  $error_message"
                 continue
                 ;;
         esac
     done
 }
 
+# Функция для выбора пользователя между "yes" и "no" с номерами 0 и 1
 input_concordance_list() {
-    local prompt_message="$1"
-    local error_message="${YELLOW}Пожалуйста, выберите вариант, введя номер 0 (No) или 1 (Yes).${RESET}"
+    local prompt_message="  $1"
+    local error_message="  ${yellow}Пожалуйста, выберите вариант, введя номер 0 (no) или 1 (yes).${reset}"
 
     echo
     echo -e "$prompt_message"
-    echo "0. No"
-    echo "1. Yes"
+    echo "     0. No"
+    echo "     1. Yes"
 
     while true; do
         echo
-        read -r -p "Введите номер: " user_input
+        read -r -p "  Введите номер: " user_input
 
         case "$user_input" in
             0) return 1 ;;
             1) return 0 ;;
             *)
                 echo
-                echo -e "$error_message"
+                echo -e "  $error_message"
                 continue
                 ;;
         esac
     done
 }
 
+# Функция для ввода только буквенных символов
 input_letters() {
-    local prompt_message="${1:-Введите буквы: }"
-    local error_message="${2:-${RED}Некорректный ввод.${RESET} Цифровые выражения не принимаются, ${YELLOW}используйте буквы${RESET}.}"
-    
+    local prompt_message="  ${1:-Введите буквы: }"
+    local error_message="  ${2:-${red}Некорректный ввод.${reset} Цифровые выражения не принимаются, ${yellow}используйте буквы${reset}.}"
+
     while true; do
-        read -r -p "$prompt_message" input
+        read -r -p "  $prompt_message" input
         if [[ "$input" =~ ^[a-zA-Z]+$ ]]; then
-			echo 
-            echo "$input"
+            echo 
+            echo "  $input"
             break
         else
-			echo 
-            echo -e "$error_message"
+            echo 
+            echo -e "  $error_message"
         fi
     done
 }
 
+# Функция для ввода только цифровых символов
 input_digits() {
     local prompt_message="${1:-Введите числа: }"
-    local error_message="${2:-${RED}Некорректный ввод.${RESET} Буквенные выражения не принимаются, ${YELLOW}используйте цифры${RESET}.}"
+    local error_message="${2:-${red}Некорректный ввод.${reset} Буквенные выражения не принимаются, ${yellow}используйте цифры${reset}.}"
 
     while true; do
-        read -r -p "$prompt_message" input
-        input="${input//,/, }" # Добавляем пробелы после запятых
-        if [[ "$input" =~ ^[0-9\ ,]+$ ]]; then # Поддерживаем цифры, запятые и пробелы
+        read -r -p "  $prompt_message" input
+        input="${input//,/, }"
+        if [[ "$input" =~ ^[0-9\ ,]+$ ]]; then
             echo 
             echo "$input"
             break
         else
             echo 
-            echo -e "$error_message"
+            echo -e "  $error_message"
         fi
     done
 }

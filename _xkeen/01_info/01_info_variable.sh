@@ -1,92 +1,96 @@
 # Определение цветов для вывода в терминал
-GREEN="\033[32m"      # Зеленый
-RED="\033[31m"        # Красный
-YELLOW="\033[33m"     # Желтый
-LIGHT_BLUE="\033[96m" # Голубой
-DARK_GRAY="\e[90m"    # Темно-серый
-RESET="\033[0m"       # Сброс цветов
+green="\033[32m"      # Зеленый
+red="\033[31m"        # Красный
+yellow="\033[33m"     # Желтый
+light_blue="\033[96m" # Голубой
+dark_gray="\e[90m"    # Темно-серый
+reset="\033[0m"       # Сброс цветов
 
 # -------------------------------------
 # Определение директорий
 # -------------------------------------
 
-TMP_DIR_GLOBAL="/opt/tmp"            # Временная директория общая
-TMP_DIR="/opt/tmp/xkeen"             # Временная директория Xkeen
-XKEEN_LOG_DIR="/opt/var/log/xkeen"   # Директория логов для xkeen
-XRAY_LOG_DIR="/opt/var/log/xray"     # Директория логов для xray
-INITD_DIR="/opt/etc/init.d"          # Директория init.d
-PID_DIR="/opt/var/run"               # Директория для PID файлов
-BACKUPS_DIR="/opt/backups"           # Директория для бекапов
-INSTALL_DIR="/opt/sbin"              # Директория установки
-XKEEN_DIR="/opt/sbin/.xkeen"        # Xkeen директория
-GEO_DIR="/opt/etc/xray/dat"          # Директория для Geo баз
-CRON_DIR="/opt/var/spool/cron/crontabs" # Директория для cron файла xkeen
-CRON_FILE="root"                    # Сron файл
-INSTALL_CONF_DIR="/opt/etc/xray/configs"  # Директория для хранения конфигурации в Xray
-XKEEN_CONF_DIR="$XKEEN_DIR/02_install/08_install_configs/02_configs_dir/" # Директория для хранения конфигурации в Xkeen
-REGISTER_DIR="/opt/lib/opkg/info"
-STATUS_FILE="/opt/lib/opkg/status"
-XKEEN_CURRENT_VERSION="0.1"
+tmp_dir_global="/opt/tmp"            # Временная директория общая
+tmp_dir="/opt/tmp/xkeen"             # Временная директория xkeen
+xkeen_log_dir="/opt/var/log/xkeen"   # Директория логов для xkeen
+xray_log_dir="/opt/var/log/xray"     # Директория логов для xray
+initd_dir="/opt/etc/init.d"          # Директория init.d
+pid_dir="/opt/var/run"               # Директория для pid файлов
+backups_dir="/opt/backups"           # Директория для бекапов
+install_dir="/opt/sbin"              # Директория установки
+xkeen_dir="/opt/sbin/.xkeen"        # xkeen директория
+geo_dir="/opt/etc/xray/dat"          # Директория для dat
+dat_filename="custom.dat"
+dat_file="$geo_dir/$dat_filename"
+cron_dir="/opt/var/spool/cron/crontabs" # Директория для cron файла xkeen
+cron_file="root"                    # Сron файл
+install_conf_dir="/opt/etc/xray/configs"  # Директория для хранения конфигурации в xray
+xkeen_conf_dir="$xkeen_dir/02_install/08_install_configs/02_configs_dir/" # Директория для хранения конфигурации в xkeen
+register_dir="/opt/lib/opkg/info"
+status_file="/opt/lib/opkg/status"
+releases_dir="/opt/releases"
+xkeen_current_version="0.2"
 
 # -------------------------------------
 # Определение временных значений
 # -------------------------------------
 
-INSTALLED_TIME=$(date +%s)
-existing_content=$(cat "$STATUS_FILE")
-INSTALLED_SIZE=$(du -s "$INSTALL_DIR" | cut -f1)
-SOURCE_DATE_EPOCH=$(date +%s)
+installed_time=$(date +%s)
+existing_content=$(cat "$status_file")
+installed_size=$(du -s "$install_dir" | cut -f1)
+source_date_epoch=$(date +%s)
+current_datetime=$(date "+%d-%b-%y_%H-%M")
 
 # -------------------------------------
-# Определение URL API
+# Определение url api
 # -------------------------------------
 
-XRAY_API_URL="https://api.github.com/repos/yichya/openwrt-xray/releases/latest"  # URL API для Xray
-XKEEN_API_URL="https://api.github.com/repos/Skrill0/XKeen/releases/latest"        # URL API для Xkeen
+xray_api_url="https://api.github.com/repos/yichya/openwrt-xray/releases/latest"  # url api для xray
+xkeen_api_url="https://api.github.com/repos/skrill0/xkeen/releases/latest"        # url api для xkeen
 
 # -------------------------------------
 # Создание директорий и файлов
 # -------------------------------------
 
 # Проверка и создание директорий логов, если не существуют
-mkdir -p "$XKEEN_LOG_DIR" || { echo "Ошибка: Не удалось создать директорию $XKEEN_LOG_DIR"; exit 1; }
-mkdir -p "$XRAY_LOG_DIR" || { echo "Ошибка: Не удалось создать директорию $XRAY_LOG_DIR"; exit 1; }
-mkdir -p "$INITD_DIR" || { echo "Ошибка: Не удалось создать директорию $INITD_DIR"; exit 1; }
-mkdir -p "$PID_DIR" || { echo "Ошибка: Не удалось создать директорию $PID_DIR"; exit 1; }
-mkdir -p "$BACKUPS_DIR" || { echo "Ошибка: Не удалось создать директорию $BACKUPS_DIR"; exit 1; }
-mkdir -p "$INSTALL_DIR" || { echo "Ошибка: Не удалось создать директорию $INSTALL_DIR"; exit 1; }
-mkdir -p "$GEO_DIR" || { echo "Ошибка: Не удалось создать директорию $GEO_DIR"; exit 1; }
-mkdir -p "$CRON_DIR" || { echo "Ошибка: Не удалось создать директорию $CRON_DIR"; exit 1; }
-mkdir -p "$INSTALL_CONF_DIR" || { echo "Ошибка: Не удалось создать директорию $INSTALL_CONF_DIR"; exit 1; }
+mkdir -p "$xkeen_log_dir" || { echo "Ошибка: Не удалось создать директорию $xkeen_log_dir"; exit 1; }
+mkdir -p "$xray_log_dir" || { echo "Ошибка: Не удалось создать директорию $xray_log_dir"; exit 1; }
+mkdir -p "$initd_dir" || { echo "Ошибка: Не удалось создать директорию $initd_dir"; exit 1; }
+mkdir -p "$pid_dir" || { echo "Ошибка: Не удалось создать директорию $pid_dir"; exit 1; }
+mkdir -p "$backups_dir" || { echo "Ошибка: Не удалось создать директорию $backups_dir"; exit 1; }
+mkdir -p "$install_dir" || { echo "Ошибка: Не удалось создать директорию $install_dir"; exit 1; }
+mkdir -p "$geo_dir" || { echo "Ошибка: Не удалось создать директорию $geo_dir"; exit 1; }
+mkdir -p "$cron_dir" || { echo "Ошибка: Не удалось создать директорию $cron_dir"; exit 1; }
+mkdir -p "$install_conf_dir" || { echo "Ошибка: Не удалось создать директорию $install_conf_dir"; exit 1; }
 
 # -------------------------------------
 # Определение файлов логов
 # -------------------------------------
 
-XKEEN_INFO_LOG="$XKEEN_LOG_DIR/info.log"
-XKEEN_ERROR_LOG="$XKEEN_LOG_DIR/error.log"
+xkeen_info_log="$xkeen_log_dir/info.log"
+xkeen_error_log="$xkeen_log_dir/error.log"
 
-XRAY_ACCESS_LOG="$XRAY_LOG_DIR/access.log"
-XRAY_ERROR_LOG="$XRAY_LOG_DIR/error.log"
+xray_access_log="$xray_log_dir/access.log"
+xray_error_log="$xray_log_dir/error.log"
 
 # Создание .log файлов, если они не существуют
-touch "$XKEEN_INFO_LOG" || { echo "Ошибка: Не удалось создать файл $XKEEN_INFO_LOG"; exit 1; }
-touch "$XKEEN_ERROR_LOG" || { echo "Ошибка: Не удалось создать файл $XKEEN_ERROR_LOG"; exit 1; }
+touch "$xkeen_info_log" || { echo "Ошибка: Не удалось создать файл $xkeen_info_log"; exit 1; }
+touch "$xkeen_error_log" || { echo "Ошибка: Не удалось создать файл $xkeen_error_log"; exit 1; }
 
-touch "$XRAY_ACCESS_LOG" || { echo "Ошибка: Не удалось создать файл $XKEEN_INFO_LOG"; exit 1; }
-touch "$XRAY_ERROR_LOG" || { echo "Ошибка: Не удалось создать файл $XKEEN_ERROR_LOG"; exit 1; }
+touch "$xray_access_log" || { echo "Ошибка: Не удалось создать файл $xkeen_info_log"; exit 1; }
+touch "$xray_error_log" || { echo "Ошибка: Не удалось создать файл $xkeen_error_log"; exit 1; }
 
 # -------------------------------------
-# Функция для вызова API с обработкой ошибок
+# Функция для вызова api с обработкой ошибок
 # -------------------------------------
 
 call_api() {
     local url="$1"
     local response
 
-    response=$(curl -sS "$url")
+    response=$(curl -ss "$url")
     if [ $? -ne 0 ]; then
-        log_error "Ошибка при вызове API: $url"
+        log_error "Ошибка при вызове api: $url"
         exit 1
     fi
 

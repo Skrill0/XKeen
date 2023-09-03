@@ -1,11 +1,10 @@
-#!/bin/sh
-
 # Функция для генерации ключевых слов на основе архитектуры
 generate_keyword() {
     local architecture="$1"
     local model_name="$2"
     local generated_keyword
     
+	# Сравниваем комбинацию архитектуры и модели процессора
     case "$(echo "$architecture$model_name" | tr '[:upper:]' '[:lower:]')" in
         *"aarch64"* | *"cortex-a53"*)
             generated_keyword="aarch64_cortex-a53"
@@ -54,8 +53,9 @@ generate_keyword() {
             ;;
         *)
             generated_keyword=""
+            echo "[error] Не удалось сгенерировать ключевое слово для архитектуры и модели процессора." >> "$xkeen_error_log"
             ;;
     esac
-	
-	echo "$generated_keyword"
+    
+    echo "$generated_keyword"
 }

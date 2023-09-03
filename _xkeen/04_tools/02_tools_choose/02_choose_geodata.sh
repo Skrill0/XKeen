@@ -1,39 +1,40 @@
+# Функция для выбора вариантов GeoData
 choose_geodata() {
-    # Проверка наличия установленных и отсутствующих GeoData
     local has_missing_geodata_bases=false
     local has_updatable_geodata_bases=false
-    [ "$GEO_EXISTS_GEODATA_V2FLY" != "installed" ] && has_missing_geodata_bases=true
-    [ "$GEO_EXISTS_GEODATA_ANTIFILTER" != "installed" ] && has_missing_geodata_bases=true
-    [ "$GEO_EXISTS_GEODATA_ANTIZAPRET" != "installed" ] && has_missing_geodata_bases=true
-    [ "$GEO_EXISTS_GEODATA_V2FLY" = "installed" ] || [ "$GEO_EXISTS_GEODATA_ANTIFILTER" = "installed" ] || [ "$GEO_EXISTS_GEODATA_ANTIZAPRET" = "installed" ] && has_updatable_geodata_bases=true
+
+    # Проверяем наличие и обновляемости GeoData баз
+    [ "$geo_exists_geodata_v2fly" != "installed" ] && has_missing_geodata_bases=true
+    [ "$geo_exists_geodata_antifilter" != "installed" ] && has_missing_geodata_bases=true
+    [ "$geo_exists_geodata_antizapret" != "installed" ] && has_missing_geodata_bases=true
+    [ "$geo_exists_geodata_v2fly" = "installed" ] || [ "$geo_exists_geodata_antifilter" = "installed" ] || [ "$geo_exists_geodata_antizapret" = "installed" ] && has_updatable_geodata_bases=true
 
     while true; do
-        # Вывод доступных действий
         echo 
         echo 
-        echo "Выберите номер или номера действий для GeoData:"
+        echo -e "  Выберите номер или номера действий для ${yellow}GeoData${reset}"
         echo 
-        echo "0. Пропустить"
-        [ "$has_missing_geodata_bases" = true ] && echo "1. Установить отсутствующие GeoData" || echo -e "1. ${DARK_GRAY}Все доступные GeoData установлены${RESET}"
-        [ "$has_updatable_geodata_bases" = true ] && echo "2. Обновить установленные GeoData" || echo -e "2. ${DARK_GRAY}Нет доступных GeoData для обновления${RESET}"
+        echo "     0. Пропустить"
+        [ "$has_missing_geodata_bases" = true ] && echo "     1. Установить отсутствующие GeoData" || echo -e "     1. ${dark_gray}Все доступные GeoData установлены${reset}"
+        [ "$has_updatable_geodata_bases" = true ] && echo "     2. Обновить установленные GeoData" || echo -e "     2. ${dark_gray}Нет доступных GeoData для обновления${reset}"
 
-        [ "$GEO_EXISTS_GEODATA_V2FLY" != "installed" ] && v2fly_choice="Установить" || v2fly_choice="Обновить"
-        [ "$GEO_EXISTS_GEODATA_ANTIFILTER" != "installed" ] && antifilter_choice="Установить" || antifilter_choice="Обновить"
-        [ "$GEO_EXISTS_GEODATA_ANTIZAPRET" != "installed" ] && antizapret_choice="Установить" || antizapret_choice="Обновить"
+        [ "$geo_exists_geodata_v2fly" != "installed" ] && v2fly_choice="Установить" || v2fly_choice="Обновить"
+        [ "$geo_exists_geodata_antifilter" != "installed" ] && antifilter_choice="Установить" || antifilter_choice="Обновить"
+        [ "$geo_exists_geodata_antizapret" != "installed" ] && antizapret_choice="Установить" || antizapret_choice="Обновить"
 
-        echo "3. $v2fly_choice GeoData v2fly"
-        echo "4. $antifilter_choice GeoData AntiFilter"
-        echo "5. $antizapret_choice GeoData AntiZapret"
+        echo "     3. $v2fly_choice v2fly"
+        echo "     4. $antifilter_choice AntiFilter"
+        echo "     5. $antizapret_choice AntiZapret"
 
-        [ "$has_updatable_geodata_bases" = true ] && echo "99. Удалить все GeoData" || echo -e "99. ${DARK_GRAY}Нет установленных GeoData для удаления${RESET}"
+        [ "$has_updatable_geodata_bases" = true ] && echo "     99. Удалить все GeoData" || echo -e "     99. ${dark_gray}Нет установленных GeoData для удаления${reset}"
         echo
         
-        local geodata_choices=$(input_digits "Ваш выбор:" "${RED}Некорректный номер действия.${RESET} Пожалуйста, выберите снова.")
+        local geodata_choices=$(input_digits "Ваш выбор: " "${red}Некорректный номер действия.${reset} Пожалуйста, выберите снова")
 
         local invalid_choice=false
         for choice in $geodata_choices; do
             if ! [[ "$choice" =~ ^[0-9]+$ ]]; then
-                echo -e "${RED}Некорректный номер действия.${RESET} Пожалуйста, выберите снова."
+                echo -e "  ${red}Некорректный номер действия.${reset} Пожалуйста, выберите снова"
                 invalid_choice=true
                 break
             fi
@@ -41,26 +42,25 @@ choose_geodata() {
         
         for choice in $geodata_choices; do
             if [ "$choice" -eq 0 ]; then
-                echo "Выполнен пропуск установки / обновления GeoData"
+                echo "  Выполнен пропуск установки / обновления GeoData"
                 return
             elif ([ "$choice" -eq 1 ] && [ "$has_missing_geodata_bases" = false ]); then
-                echo -e "${YELLOW}Все GeoData уже установлены${RESET}."
-                if input_concordance "Вы хотите обновить их?"; then
-                    update_v2fly_geodata=false
-                    update_antifilter_geodata=false
-                    update_antizapret_geodata=false
-                    install_v2fly_geodata=true
-                    install_antifilter_geodata=true
-                    install_antizapret_geodata=true
+                echo -e "  ${green}Все GeoData уже установлены${reset}"
+                if input_concordance_list "  Вы хотите обновить их?"; then
+                    install_v2fly_geodata=false
+                    install_antifilter_geodata=false
+                    install_antizapret_geodata=false
+                    update_v2fly_geodata=true
+                    update_antifilter_geodata=true
+                    update_antizapret_geodata=true
                     break
                 else
-                    echo "Выберите другой пункт."
                     invalid_choice=true
                     break
                 fi
             elif [ "$choice" -eq 2 ] && [ "$has_updatable_geodata_bases" = false ]; then
-                echo -e "${RED}Нет установленных GeoData${RESET} для обновления."
-                if input_concordance "Вы хотите установить их?"; then
+                echo -e "  ${red}Нет установленных GeoData${reset} для обновления"
+                if input_concordance_list "  Вы хотите установить их?"; then
                     install_v2fly_geodata=true
                     install_antifilter_geodata=true
                     install_antizapret_geodata=true
@@ -69,12 +69,11 @@ choose_geodata() {
                     update_antizapret_geodata=false
                     break
                 else
-                    echo "Выберите другой пункт."
                     invalid_choice=true
                     break
                 fi
             elif [ "$choice" -eq 99 ] && [ "$has_updatable_geodata_bases" = false ]; then
-                echo -e "${RED}Нет установленных GeoData для удаления${RESET}. Пожалуйста, выберите другой пункт."
+                echo -e "  ${red}Нет установленных GeoData для удаления${reset}. Выберите другой пункт"
                 invalid_choice=true
                 break
             fi
@@ -91,7 +90,6 @@ choose_geodata() {
             chose_delete_geodata_antifilter_select=false
             chose_delete_geodata_antizapret_select=false
 
-            # Определение выбранных действий
             for choice in $geodata_choices; do
                 if [ "$choice" -eq 1 ]; then
                     if [ "$has_missing_geodata_bases" = true ]; then
@@ -111,11 +109,11 @@ choose_geodata() {
                     update_antifilter_geodata=true
                     update_antizapret_geodata=true
                 elif [ "$choice" -eq 3 ]; then
-                    [ "$GEO_EXISTS_GEODATA_V2FLY" != "installed" ] && install_v2fly_geodata=true || update_v2fly_geodata=true
+                    [ "$geo_exists_geodata_v2fly" != "installed" ] && install_v2fly_geodata=true || update_v2fly_geodata=true
                 elif [ "$choice" -eq 4 ]; then
-                    [ "$GEO_EXISTS_GEODATA_ANTIFILTER" != "installed" ] && install_antifilter_geodata=true || update_antifilter_geodata=true
+                    [ "$geo_exists_geodata_antifilter" != "installed" ] && install_antifilter_geodata=true || update_antifilter_geodata=true
                 elif [ "$choice" -eq 5 ]; then
-                    [ "$GEO_EXISTS_GEODATA_ANTIZAPRET" != "installed" ] && install_antizapret_geodata=true || update_antizapret_geodata=true
+                    [ "$geo_exists_geodata_antizapret" != "installed" ] && install_antizapret_geodata=true || update_antizapret_geodata=true
                 elif [ "$choice" -eq 99 ]; then
                     chose_delete_geodata_v2fly_select=true
                     chose_delete_geodata_antifilter_select=true
@@ -123,39 +121,36 @@ choose_geodata() {
                 fi
             done
 
-            # Вывод выбранных действий
             install_list=""
             update_list=""
             delete_list=""
 
-            [ "$install_v2fly_geodata" = true ] && install_list="$install_list ${YELLOW}v2fly${RESET},"
-            [ "$install_antifilter_geodata" = true ] && install_list="$install_list ${YELLOW}AntiFilter${RESET},"
-            [ "$install_antizapret_geodata" = true ] && install_list="$install_list ${YELLOW}AntiZapret${RESET},"
-            [ "$update_v2fly_geodata" = true ] && update_list="$update_list ${YELLOW}v2fly${RESET},"
-            [ "$update_antifilter_geodata" = true ] && update_list="$update_list ${YELLOW}AntiFilter${RESET},"
-            [ "$update_antizapret_geodata" = true ] && update_list="$update_list ${YELLOW}AntiZapret${RESET},"
-            [ "$chose_delete_geodata_v2fly_select" = true ] && delete_list="$delete_list ${YELLOW}v2fly${RESET},"
-            [ "$chose_delete_geodata_antifilter_select" = true ] && delete_list="$delete_list ${YELLOW}AntiFilter${RESET},"
-            [ "$chose_delete_geodata_antizapret_select" = true ] && delete_list="$delete_list ${YELLOW}AntiZapret${RESET},"
+            [ "$install_v2fly_geodata" = true ] && install_list="$install_list ${yellow}v2fly${reset},"
+            [ "$install_antifilter_geodata" = true ] && install_list="$install_list ${yellow}AntiFilter${reset},"
+            [ "$install_antizapret_geodata" = true ] && install_list="$install_list ${yellow}AntiZapret${reset},"
+            [ "$update_v2fly_geodata" = true ] && update_list="$update_list ${yellow}v2fly${reset},"
+            [ "$update_antifilter_geodata" = true ] && update_list="$update_list ${yellow}AntiFilter${reset},"
+            [ "$update_antizapret_geodata" = true ] && update_list="$update_list ${yellow}AntiZapret${reset},"
+            [ "$chose_delete_geodata_v2fly_select" = true ] && delete_list="$delete_list ${yellow}v2fly${reset},"
+            [ "$chose_delete_geodata_antifilter_select" = true ] && delete_list="$delete_list ${yellow}AntiFilter${reset},"
+            [ "$chose_delete_geodata_antizapret_select" = true ] && delete_list="$delete_list ${yellow}AntiZapret${reset},"
 
             if [ -n "$install_list" ]; then
-                echo -e "Будут установлены следующие GeoData: ${install_list%,}"
+                echo -e "  Устанавливаются следующие GeoData: ${install_list%,}"
             fi
 
             if [ -n "$update_list" ]; then
-                echo -e "Будут обновлены следующие GeoData: ${update_list%,}"
+                echo -e "  Обновляются следующие GeoData: ${update_list%,}"
             fi
 
             if [ -n "$delete_list" ]; then
-                echo -e "Будут удалены следующие GeoData: ${delete_list%,}"
+                echo -e "  Удаляются следующие GeoData: ${delete_list%,}"
             fi
 
-            # Сравнение переменных install и update
             [ "$install_v2fly_geodata" = "$update_v2fly_geodata" ] && chose_geodata_v2fly_select="$install_v2fly_geodata"
             [ "$install_antifilter_geodata" = "$update_antifilter_geodata" ] && chose_geodata_antifilter_select="$install_antifilter_geodata"
             [ "$install_antizapret_geodata" = "$update_antizapret_geodata" ] && chose_geodata_antizapret_select="$install_antizapret_geodata"
 
-            # Экспорт переменных
             export chose_delete_geodata_v2fly_select
             export chose_delete_geodata_antifilter_select
             export chose_delete_geodata_antizapret_select

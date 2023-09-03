@@ -1,5 +1,5 @@
-#!/bin/sh
-
-# Модуль регистрации
-. "$XINSTALL_DIR/07_install_register/01_register_xray.sh"
-. "$XINSTALL_DIR/07_install_register/02_register_xkeen.sh"
+# Импорт модулей регистраций
+	
+# Модули регистрации
+. "$xinstall_dir/07_install_register/01_register_xray.sh"
+. "$xinstall_dir/07_install_register/02_register_xkeen.sh"

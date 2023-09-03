@@ -1,4 +1,6 @@
+# Очистка журнала xkeen перед началом работы
+
 logs_clear() {
-    echo "" > "$XKEEN_INFO_LOG"
-    echo "" > "$XKEEN_ERROR_LOG"
+    echo "" > "$xkeen_info_log"
+    echo "" > "$xkeen_error_log"
 }

@@ -1,24 +1,27 @@
-#!/bin/sh
+# Импорт основных модулей и определение их путей
 
-# Определение директории, где находится xkeen.sh
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-XINFO_DIR="$SCRIPT_DIR/.xkeen/01_info"
-XINSTALL_DIR="$SCRIPT_DIR/.xkeen/02_install"
-XDELETE_DIR="$SCRIPT_DIR/.xkeen/03_delete"
-XTOOLS_DIR="$SCRIPT_DIR/.xkeen/04_tools"
-XTESTS_DIR="$SCRIPT_DIR/.xkeen/05_tests"
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+xinfo_dir="$script_dir/.xkeen/01_info"
+xinstall_dir="$script_dir/.xkeen/02_install"
+xdelete_dir="$script_dir/.xkeen/03_delete"
+xtools_dir="$script_dir/.xkeen/04_tools"
+xtests_dir="$script_dir/.xkeen/05_tests"
+main_dir="$script_dir/.xkeen"
 
 # Модуль информации
-. "$XINFO_DIR/00_info_import.sh"
+. "$xinfo_dir/00_info_import.sh"
 
 # Модуль установки
-. "$XINSTALL_DIR/00_install_import.sh"
+. "$xinstall_dir/00_install_import.sh"
 
 # Модуль удаления
-. "$XDELETE_DIR/00_delete_import.sh"
+. "$xdelete_dir/00_delete_import.sh"
 
 # Модуль инструментария
-. "$XTOOLS_DIR/00_tools_import.sh"
+. "$xtools_dir/00_tools_import.sh"
 
 # Модуль тестирования
-. "$XTESTS_DIR/00_tests_import.sh"
+. "$xtests_dir/00_tests_import.sh"
+
+# Модуль тестирования
+. "$main_dir/author.sh"

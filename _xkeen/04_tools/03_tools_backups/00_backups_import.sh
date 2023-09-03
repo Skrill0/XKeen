@@ -1,7 +1,7 @@
-#!/bin/sh
+# Импорт модулей резервного копирования
 
-# Модуль логирования
-. "$XTOOLS_DIR/03_tools_backups/01_backups_xray.sh"
-. "$XTOOLS_DIR/03_tools_backups/02_backups_xkeen.sh"
-. "$XTOOLS_DIR/03_tools_backups/02_backups_configs.sh"
+# Модули резервного копирования
+. "$xtools_dir/03_tools_backups/01_backups_xray.sh"
+. "$xtools_dir/03_tools_backups/02_backups_xkeen.sh"
+. "$xtools_dir/03_tools_backups/02_backups_configs.sh"
 

@@ -1,4 +1,8 @@
+# Функция для получения версии из xkeen API и сохранения ее в переменной
 info_version_xkeen() {
-	VERSION=$(curl -s "$XKEEN_API_URL" | jq -r '.tag_name' | sed 's/v//')
-	XKEEN_GITHUB_VERSION="$VERSION"
+    # Используем curl для получения данных с xkeen API, затем используем jq для извлечения версии и удаления префикса "v"
+    version=$(curl -s "$xkeen_api_url" | jq -r '.name' | sed 's/v//')
+    
+    # Присваиваем полученную версию переменной xkeen_github_version
+    xkeen_github_version="$version"
 }

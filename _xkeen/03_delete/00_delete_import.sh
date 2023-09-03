@@ -1,9 +1,9 @@
-#!/bin/sh
+# Импорт модулей удаления
 
-# Модуль установки
-. "$XDELETE_DIR/01_delete_geodata.sh"
-. "$XDELETE_DIR/02_delete_geoip.sh"
-. "$XDELETE_DIR/03_delete_cron.sh"
-. "$XDELETE_DIR/04_delete_configs.sh"
-. "$XDELETE_DIR/05_delete_register.sh"
-. "$XDELETE_DIR/06_delete_tmp.sh"
+# Модули удаления
+. "$xdelete_dir/01_delete_geodata.sh"
+. "$xdelete_dir/02_delete_geoip.sh"
+. "$xdelete_dir/03_delete_cron.sh"
+. "$xdelete_dir/04_delete_configs.sh"
+. "$xdelete_dir/05_delete_register.sh"
+. "$xdelete_dir/06_delete_tmp.sh"

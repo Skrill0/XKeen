@@ -1,6 +1,6 @@
-#!/bin/sh
+#Блок логирования
 
-# Модуль логирования
-. "$XTOOLS_DIR/01_tools_logs/01_logs_clear.sh"
-. "$XTOOLS_DIR/01_tools_logs/02_logs_console.sh"
-. "$XTOOLS_DIR/01_tools_logs/03_logs_xkeen.sh"
+# Модули логирования
+. "$xtools_dir/01_tools_logs/01_logs_clear.sh"
+. "$xtools_dir/01_tools_logs/02_logs_console.sh"
+. "$xtools_dir/01_tools_logs/03_logs_xkeen.sh"

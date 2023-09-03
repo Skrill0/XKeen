@@ -1,16 +1,16 @@
-#!/bin/sh
-
-# Функция для проверки наличия и записи информации о базах geo
+# Функция для проверки наличия и записи информации о базах geoip
 info_geoip() {
-    if [ -e "$GEO_DIR/geoip_antifilter.dat" ]; then
-        GEO_EXISTS_GEOIP_ANTIFILTER="installed"
+    # Проверяем наличие файла geoip_antifilter.dat
+    if [ -e "$geo_dir/geoip_antifilter.dat" ]; then
+        geo_exists_geoip_antifilter="installed"
     else
-        GEO_EXISTS_GEOIP_ANTIFILTER="not_installed"
+        geo_exists_geoip_antifilter="not_installed"
     fi
 
-    if [ -e "$GEO_DIR/geoip_v2fly.dat" ]; then
-        GEO_EXISTS_GEOIP_V2FLY="installed"
+    # Проверяем наличие файла geoip_v2fly.dat
+    if [ -e "$geo_dir/geoip_v2fly.dat" ]; then
+        geo_exists_geoip_v2fly="installed"
     else
-        GEO_EXISTS_GEOIP_V2FLY="not_installed"
+        geo_exists_geoip_v2fly="not_installed"
     fi
 }
