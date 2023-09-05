@@ -4,30 +4,30 @@ install_cron() {
 
     # Создание записей для всех выбранных задач Cron
     if [ -n "$chose_all_cron_time" ]; then
-        cron_entry="$cron_entry\n$chose_all_cron_time $xkeen_dir/xkeen -ugic"
-        cron_entry="$cron_entry\n$chose_all_cron_time $xkeen_dir/xkeen -ugdc"
-        cron_entry="$cron_entry\n$chose_all_cron_time $xkeen_dir/xkeen -ukc"
-        cron_entry="$cron_entry\n$chose_all_cron_time $xkeen_dir/xkeen -uxc"
+        cron_entry="$cron_entry\n$chose_all_cron_time $install_dir/xkeen -ugic"
+        cron_entry="$cron_entry\n$chose_all_cron_time $install_dir/xkeen -ugsc"
+        cron_entry="$cron_entry\n$chose_all_cron_time $install_dir/xkeen -ukc"
+        cron_entry="$cron_entry\n$chose_all_cron_time $install_dir/xkeen -uxc"
     fi
 
     # Добавление задачи Cron для обновления GeoIP
     if [ -n "$chose_geoip_cron_time" ]; then
-        cron_entry="$cron_entry\n$chose_geoip_cron_time $xkeen_dir/xkeen -ugic"
+        cron_entry="$cron_entry\n$chose_geoip_cron_time $install_dir/xkeen -ugic"
     fi
 
-    # Добавление задачи Cron для обновления GeoData
-    if [ -n "$chose_geodata_cron_time" ]; then
-        cron_entry="$cron_entry\n$chose_geodata_cron_time $xkeen_dir/xkeen -ugdc"
+    # Добавление задачи Cron для обновления GeoSite
+    if [ -n "$chose_geosite_cron_time" ]; then
+        cron_entry="$cron_entry\n$chose_geosite_cron_time $install_dir/xkeen -ugsc"
     fi
 
     # Добавление задачи Cron для обновления Xkeen
     if [ -n "$chose_xkeen_cron_time" ]; then
-        cron_entry="$cron_entry\n$chose_xkeen_cron_time $xkeen_dir/xkeen -ukc"
+        cron_entry="$cron_entry\n$chose_xkeen_cron_time $install_dir/xkeen -ukc"
     fi
 
     # Добавление задачи Cron для обновления Xray
     if [ -n "$chose_xray_cron_time" ]; then
-        cron_entry="$cron_entry\n$chose_xray_cron_time $xkeen_dir/xkeen -uxc"
+        cron_entry="$cron_entry\n$chose_xray_cron_time $install_dir/xkeen -uxc"
     fi
 
     # Если есть записи для задач Cron, то сохраняем их
@@ -36,10 +36,10 @@ install_cron() {
 
         # Удаляем существующие записи, если выбрано перезаписать или удалить
         if [ -n "$chose_all_cron_select" ] || [ -n "$chose_delete_all_cron_select" ]; then
-            sed -i "/$xkeen_dir\/xkeen.*-ugic/d" "$cron_file_path" 2>/dev/null
-            sed -i "/$xkeen_dir\/xkeen.*-ugdc/d" "$cron_file_path" 2>/dev/null
-            sed -i "/$xkeen_dir\/xkeen.*-ukc/d" "$cron_file_path" 2>/dev/null
-            sed -i "/$xkeen_dir\/xkeen.*-uxc/d" "$cron_file_path" 2>/dev/null
+            sed -i "/$install_dir\/xkeen.*-ugic/d" "$cron_file_path" 2>/dev/null
+            sed -i "/$install_dir\/xkeen.*-ugsc/d" "$cron_file_path" 2>/dev/null
+            sed -i "/$install_dir\/xkeen.*-ukc/d" "$cron_file_path" 2>/dev/null
+            sed -i "/$install_dir\/xkeen.*-uxc/d" "$cron_file_path" 2>/dev/null
         fi
 
         touch "$cron_file_path"

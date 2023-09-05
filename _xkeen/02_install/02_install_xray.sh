@@ -35,23 +35,23 @@ install_xray() {
 
     rm -rf "$tmp_dir/xray"
     if [ $? -eq 0 ]; then
-        info_content="${info_content}\t[info] Временные файлы удалены\n"
+        info_content="${info_content}\t[info] Временные файлы удалены"
     else
-        error_content="${error_content}\t[error] Ошибка при удалении временных файлов\n"
+        error_content="${error_content}\t[error] Ошибка при удалении временных файлов"
     fi
 
     rm "$xray_archive"
     if [ $? -eq 0 ]; then
-        info_content="${info_content}\t[info] Архив xray удален\n"
+        info_content="${info_content}\t[info] Архив xray удален"
     else
-        error_content="${error_content}\t[error] Ошибка при удалении архива xray\n"
+        error_content="${error_content}\t[error] Ошибка при удалении архива xray"
     fi
 
     if [ -n "$error_content" ]; then
         echo "" >> "$xkeen_error_log"
         echo "[start] Установка xray" >> "$xkeen_error_log"
         echo -e "$error_content" >> "$xkeen_error_log"
-        echo "[end] Установка xray выполнена" >> "$xkeen_error_log"
+        echo -n "[end] Установка xray выполнена" >> "$xkeen_error_log"
         echo "" >> "$xkeen_error_log"
     fi
 
@@ -59,7 +59,7 @@ install_xray() {
         echo "" >> "$xkeen_info_log"
         echo "[start] Установка xray" >> "$xkeen_info_log"
         echo -e "$info_content" >> "$xkeen_info_log"
-        echo "[end] Установка xray выполнена" >> "$xkeen_info_log"
+        echo -n "[end] Установка xray выполнена" >> "$xkeen_info_log"
         echo "" >> "$xkeen_info_log"
     fi
 }

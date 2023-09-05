@@ -29,7 +29,7 @@ xkeen_conf_dir="$xkeen_dir/02_install/08_install_configs/02_configs_dir/" # Ди
 register_dir="/opt/lib/opkg/info"
 status_file="/opt/lib/opkg/status"
 releases_dir="/opt/releases"
-xkeen_current_version="0.2"
+xkeen_current_version="0.3"
 
 # -------------------------------------
 # Определение временных значений

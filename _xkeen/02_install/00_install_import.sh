@@ -4,7 +4,7 @@
 . "$xinstall_dir/01_install_packages.sh"
 . "$xinstall_dir/02_install_xray.sh"
 . "$xinstall_dir/03_install_xkeen.sh"
-. "$xinstall_dir/04_install_geodata.sh"
+. "$xinstall_dir/04_install_geosite.sh"
 . "$xinstall_dir/05_install_geoip.sh"
 . "$xinstall_dir/06_install_cron.sh"
 

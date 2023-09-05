@@ -5,7 +5,7 @@
 . "$xinfo_dir/02_info_packages.sh"
 . "$xinfo_dir/03_info_cpu.sh"
 . "$xinfo_dir/04_info_xray.sh"
-. "$xinfo_dir/05_info_geodata.sh"
+. "$xinfo_dir/05_info_geosite.sh"
 . "$xinfo_dir/06_info_geoip.sh"
 . "$xinfo_dir/07_info_cron.sh"
 

@@ -25,9 +25,9 @@ if [ -d "$install_dir/_xkeen" ]; then
     # Удаление текущей .xkeen и переименование _xkeen
     rm -rf "$install_dir/.xkeen"
     mv "$install_dir/_xkeen" "$install_dir/.xkeen"
-    echo "Установка xkeen завершена."
+    echo "  Установка xkeen завершена."
 else
-    echo "Ошибка: _xkeen не была правильно перенесена."
+    echo "  Ошибка: _xkeen не была правильно перенесена."
 fi
 
 # Удаление архива
@@ -37,9 +37,9 @@ EOF
     chmod +x "$install_script"
     "$install_script"
     if [ $? -eq 0 ]; then
-        info_content="${info_content}\t[info] Установка xkeen успешно завершена\n"
+        info_content="${info_content}\t[info] Установка xkeen успешно завершена"
     else
-        error_content="${error_content}\t[error] Ошибка при установке xkeen\n"
+        error_content="${error_content}\t[error] Ошибка при установке xkeen"
     fi
     rm "$install_script"
 

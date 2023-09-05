@@ -128,10 +128,6 @@ choose_geoip() {
             if [ -n "$delete_list" ]; then
                 echo -e "  Удаляются следующие GeoIP: ${delete_list%,}"
             fi
-
-            [ "$install_antifilter_geoip" = "$update_antifilter_geoip" ] && chose_geoip_antifilter_select="$install_antifilter_geoip"
-            [ "$install_v2fly_geoip" = "$update_v2fly_geoip" ] && chose_geoip_v2fly_select="$install_v2fly_geoip"
-
             break
         fi
     done

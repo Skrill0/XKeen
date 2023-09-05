@@ -3,196 +3,131 @@
 register_xray_control() {
 
     # Создание файла xray.control
-    cat << eof > "$register_dir/xray.control"
-package: xray
-version: $xray_current_version
-depends: libc, libssp, librt, libpthread, ca-bundle
-source: xtls team
-sourcename: xray
-section: net
-sourcedateepoch: $source_date_epoch
-maintainer: skrill
-architecture: $status_architecture
-installed-size: $installed_size
-description: a unified platform for anti-censorship.
-eof
+    cat << EOF > "$register_dir/xray.control"
+Package: xray
+Version: $xray_current_version
+Depends: libc, libssp, librt, libpthread, ca-bundle
+Source: XTLS Team
+SourceName: xray
+Section: net
+SourceDateEpoch: $source_date_epoch
+Maintainer: Skrill
+Architecture: $status_architecture
+Installed-Size: $installed_size
+Description: A unified platform for anti-censorship.
+EOF
 }
 
+# Определение функции register_xray_list
 register_xray_list() {
 
-    # Переход в папку register_dir
+    # Переход в папку REGISTER_DIR
     cd "$register_dir/" || exit
 
-    touch xray.list
-    cat >> xray.list << eof	
-	
-if [ -e "/opt/sbin/xray" ]; then
-    echo "/opt/sbin/xray" >> xray.list
-fi
-
-if [ -e "/opt/etc/dat/geodata_antifilter.dat" ]; then
-    echo "/opt/etc/dat/geodata_antifilter.dat" >> xray.list
-fi
-
-if [ -e "/opt/etc/dat/geodata_antizapret.dat" ]; then
-    echo "/opt/etc/dat/geodata_antizapret.dat" >> xray.list
-fi
-
-if [ -e "/opt/etc/dat/geodata_v2ray.dat" ]; then
-    echo "/opt/etc/dat/geodata_v2ray.dat" >> xray.list
-fi
-
-if [ -e "/opt/etc/dat/geoip_antifilter.dat" ]; then
-    echo "/opt/etc/dat/geoip_antifilter.dat" >> xray.list
-fi
-
-if [ -e "/opt/etc/dat/geoip_v2ray.dat" ]; then
-    echo "/opt/etc/dat/geoip_v2ray.dat" >> xray.list
-fi
-
-if [ -e "/opt/etc/dat" ]; then
-    echo "/opt/etc/dat" >> xray.list
-fi
-
-if [ -e "/opt/etc/configs/00_base.json" ]; then
-    echo "/opt/etc/configs/00_base.json" >> xray.list
-fi
-
-if [ -e "/opt/etc/configs/01_log.json" ]; then
-    echo "/opt/etc/configs/01_log.json" >> xray.list
-fi
-
-if [ -e "/opt/etc/configs/02_stats.json" ]; then
-    echo "/opt/etc/configs/02_stats.json" >> xray.list
-fi
-
-if [ -e "/opt/etc/configs/03_dns.json" ]; then
-    echo "/opt/etc/configs/03_dns.json" >> xray.list
-fi
-
-if [ -e "/opt/etc/configs/04_reverse.json" ]; then
-    echo "/opt/etc/configs/04_reverse.json" >> xray.list
-fi
-
-if [ -e "/opt/etc/configs/05_fake-dns.json" ]; then
-    echo "/opt/etc/configs/05_fake-dns.json" >> xray.list
-fi
-
-if [ -e "/opt/etc/configs/06_transport.json" ]; then
-    echo "/opt/etc/configs/06_transport.json" >> xray.list
-fi
-
-if [ -e "/opt/etc/configs/07_inbounds.json" ]; then
-    echo "/opt/etc/configs/07_inbounds.json" >> xray.list
-fi
-
-if [ -e "/opt/etc/configs/08_outbounds.json" ]; then
-    echo "/opt/etc/configs/08_outbounds.json" >> xray.list
-fi
-
-if [ -e "/opt/etc/configs/09_policy.json" ]; then
-    echo "/opt/etc/configs/09_policy.json" >> xray.list
-fi
-
-if [ -e "/opt/etc/configs/10_routing.json" ]; then
-    echo "/opt/etc/configs/10_routing.json" >> xray.list
-fi
-
-if [ -e "/opt/etc/xray" ]; then
-    echo "/opt/etc/xray" >> xray.list
-fi
-
-if [ -e "/opt/etc/init.d/s24xray" ]; then
-    echo "/opt/etc/init.d/s24xray" >> xray.list
-fi
-
-if [ -e "/opt/var/log/xray/error.log" ]; then
-    echo "/opt/var/log/xray/error.log" >> xray.list
-fi
-
-if [ -e "/opt/var/log/xray/access.log" ]; then
-    echo "/opt/var/log/xray/access.log" >> xray.list
-fi
-
-if [ -e "/opt/var/log/xray" ]; then
-    echo "/opt/var/log/xray" >> xray.list
-fi
-
-if [ -e "/opt/var/run/xray.pid" ]; then
-    echo "/opt/var/run/xray.pid" >> xray.list
-fi
-
-eof
+    # Создание файла xray.list или перезапись, если файл уже существует
+    cat > xray.list << EOF
+/opt/sbin/xray
+/opt/etc/xray/dat/geosite_antifilter.dat
+/opt/etc/xray/dat/geosite_antizapret.dat
+/opt/etc/xray/dat/geosite_v2ray.dat
+/opt/etc/xray/dat/geoip_antifilter.dat
+/opt/etc/xray/dat/geoip_v2ray.dat
+/opt/etc/dat
+/opt/etc/xray/configs/01_log.json
+/opt/etc/xray/configs/02_stats.json
+/opt/etc/xray/configs/03_dns.json
+/opt/etc/xray/configs/04_reverse.json
+/opt/etc/xray/configs/05_fake-dns.json
+/opt/etc/xray/configs/06_transport.json
+/opt/etc/xray/configs07_inbounds.json
+/opt/etc/xray/configs/08_outbounds.json
+/opt/etc/xray/configs/09_policy.json
+/opt/etc/xray/configs/10_routing.json
+/opt/etc/xray/configs
+/opt/etc/xray
+/opt/etc/init.d/S24xray
+/opt/var/log/xray/error.log
+/opt/var/log/xray/access.log
+/opt/var/log/xray
+/opt/var/run/xray.pid
+EOF
 
 }
-
-
 
 register_xray_status() {
     # Генерация хэш-сумм для .json файлов
-    hash_00_base=$(sha256sum "$install_conf_dir/00_base.json" | awk '{print $1}')
-    hash_01_log=$(sha256sum "$install_conf_dir/01_log.json" | awk '{print $1}')
-    hash_02_stats=$(sha256sum "$install_conf_dir/02_stats.json" | awk '{print $1}')
-    hash_03_dns=$(sha256sum "$install_conf_dir/03_dns.json" | awk '{print $1}')
-    hash_04_reverse=$(sha256sum "$install_conf_dir/04_reverse.json" | awk '{print $1}')
-    hash_05_fake_dns=$(sha256sum "$install_conf_dir/05_fake-dns.json" | awk '{print $1}')
-    hash_06_transport=$(sha256sum "$install_conf_dir/06_transport.json" | awk '{print $1}')
-    hash_07_inbounds=$(sha256sum "$install_conf_dir/07_inbounds.json" | awk '{print $1}')
-    hash_08_outbounds=$(sha256sum "$install_conf_dir/08_outbounds.json" | awk '{print $1}')
-    hash_09_policy=$(sha256sum "$install_conf_dir/09_policy.json" | awk '{print $1}')
-    hash_10_routing=$(sha256sum "$install_conf_dir/10_routing.json" | awk '{print $1}')
+    HASH_01_log=$(sha256sum "$install_conf_dir/01_log.json" | awk '{print $1}')
+    HASH_02_stats=$(sha256sum "$install_conf_dir/02_stats.json" | awk '{print $1}')
+    HASH_03_dns=$(sha256sum "$install_conf_dir/03_dns.json" | awk '{print $1}')
+    HASH_04_reverse=$(sha256sum "$install_conf_dir/04_reverse.json" | awk '{print $1}')
+    HASH_05_fake_dns=$(sha256sum "$install_conf_dir/05_fake-dns.json" | awk '{print $1}')
+    HASH_06_transport=$(sha256sum "$install_conf_dir/06_transport.json" | awk '{print $1}')
+    HASH_07_inbounds=$(sha256sum "$install_conf_dir/07_inbounds.json" | awk '{print $1}')
+    HASH_08_outbounds=$(sha256sum "$install_conf_dir/08_outbounds.json" | awk '{print $1}')
+    HASH_09_policy=$(sha256sum "$install_conf_dir/09_policy.json" | awk '{print $1}')
+    HASH_10_routing=$(sha256sum "$install_conf_dir/10_routing.json" | awk '{print $1}')
 
+    # Генерация новой записи
     new_entry="
 
-package: xray
-version: $xray_current_version
-depends: libc, libssp, librt, libpthread, ca-bundle
-status: install user installed
-architecture: $status_architecture
-conffiles:
- /opt/etc/xray/configs/00_base.json $hash_00_base
- /opt/etc/xray/configs/01_log.json $hash_01_log
- /opt/etc/xray/configs/02_stats.json $hash_02_stats
- /opt/etc/xray/configs/03_dns.json $hash_03_dns
- /opt/etc/xray/configs/04_reverse.json $hash_04_reverse
- /opt/etc/xray/configs/05_fake-dns.json $hash_05_fake_dns
- /opt/etc/xray/configs/06_transport.json $hash_06_transport
- /opt/etc/xray/configs/07_inbounds.json $hash_07_inbounds
- /opt/etc/xray/configs/08_outbounds.json $hash_08_outbounds
- /opt/etc/xray/configs/09_policy.json $hash_09_policy
- /opt/etc/xray/configs/10_routing.json $hash_10_routing
-installed-time: $(date +%s)"
+Package: xray
+Version: $xray_current_version
+Depends: libc, libssp, librt, libpthread, ca-bundle
+Status: install user installed
+Architecture: $status_architecture
+Conffiles:
+/opt/etc/xray/configs/00_base.json $HASH_00_base
+/opt/etc/xray/configs/01_log.json $HASH_01_log
+/opt/etc/xray/configs/02_stats.json $HASH_02_stats
+/opt/etc/xray/configs/03_dns.json $HASH_03_dns
+/opt/etc/xray/configs/04_reverse.json $HASH_04_reverse
+/opt/etc/xray/configs/05_fake-dns.json $HASH_05_fake_dns
+/opt/etc/xray/configs/06_transport.json $HASH_06_transport
+/opt/etc/xray/configs/07_inbounds.json $HASH_07_inbounds
+/opt/etc/xray/configs/08_outbounds.json $HASH_08_outbounds
+/opt/etc/xray/configs/09_policy.json $HASH_09_policy
+/opt/etc/xray/configs/10_routing.json $HASH_10_routing
+Installed-Time: $(date +%s)"
 
+    # Чтение существующего содержимого файла "status"
     existing_content=$(cat "$status_file")
+
+    # Объединение существующего содержимого и новой записи
     new_content="$existing_content$new_entry"
+
+    # Запись измененного содержимого обратно в файл "status"
     echo "$new_content" > "$status_file"
 }
 
-
 # Функция для создания или обновления инициализационного скрипта для Xray
 register_xray_initd() {
-  local initd_file="$initd_dir/S24xray"
+    local initd_file="$initd_dir/S24xray"
   
-  local script_content="#!/bin/sh
-### begin init info
-# provides:          xray
-# required-start:    \$local_fs \$network
-# required-stop:     \$local_fs \$network
-# default-start:     2 3 4 5
-# default-stop:      0 1 6
-# short-description: start/stop xray
-### end init info
+    local script_content='#!/bin/sh
+### Начало информации о службе
+# Краткое-описание:        Запуск / Остановка Xray
+### Конец информации о службе
+
+green="\033[32m"
+red="\033[31m"
+yellow="\033[33m"
+reset="\033[0m" 
+
+xkeen_info_log="/opt/var/log/xkeen/info.log"
+xkeen_error_log="/opt/var/log/xkeen/error.log"
 
 path=/opt/bin:/opt/sbin:/sbin:/bin:/usr/sbin:/usr/bin
 xray_path=/opt/sbin/xray
-xray_config=/opt/etc/xray/
+xray_config=/opt/etc/xray/configs
 pidfile=/opt/var/run/xray.pid
+export XRAY_LOCATION_ASSET=/opt/etc/xray/dat/
 
+# Функция для проверки статуса xray
 xray_status()
 {
-  if [ -f \$pidfile ]; then
-    local pid=\$(cat \$pidfile)
-    if ps -p \$pid > /dev/null; then
+  if [ -f $pidfile ]; then
+    local pid=$(cat $pidfile)
+    if [ -d /proc/$pid ]; then
       return 0 # Процесс существует и работает
     else
       return 1 # Процесс не существует
@@ -202,38 +137,45 @@ xray_status()
   fi
 }
 
+# Функция для запуска xray
 start()
 {
   if xray_status; then
-    echo \"xray уже запущен\"
+    echo -e "  Xray уже ${green}запущен${reset}"
+    echo "[info] Xray уже запущен" >> "$xkeen_info_log"
   else
-    \$xray_path -confdir dir \$xray_config &
-    echo \$! > \$pidfile
-    echo \"xray запущен\"
+    $xray_path -confdir $xray_config &
+    echo $! > $pidfile
+    echo -e "  Xray ${green}запущен${reset}"
+    echo "[info] Xray запущен" >> "$xkeen_info_log"
   fi
 }
 
+# Функция для остановки xray
 stop()
 {
   if xray_status; then
-    kill \"\$(cat \$pidfile)\"
-    rm -f \$pidfile
-    echo \"xray остановлен\"
+    kill "$(cat $pidfile)"
+    rm -f $pidfile
+    echo -e "  Xray ${yellow}остановлен${reset}"
+    echo "[info] Xray остановлен" >> "$xkeen_info_log"
   else
-    echo \"xray не запущен\"
+    echo -e "  Xray ${red}не запущен${reset}"
+    echo "[error] Xray не был запущен" >> "$xkeen_error_log"
   fi
 }
 
-# Ожидание завершения процесса
+# Функция для ожидания завершения процесса
 wait_for_process()
 {
-  local pid=\$1
-  while ps -p \$pid > /dev/null; do
+  local pid=$1
+  while [ -d /proc/$pid ]; do
     sleep 1
   done
 }
 
-case \"\$1\" in
+# Обработка аргументов командной строки
+case "$1" in
   start)
     start
     ;;
@@ -242,29 +184,35 @@ case \"\$1\" in
     ;;
   status)
     if xray_status; then
-      echo \"xray запущен\"
+      echo -e "  Xray ${green}запущен${reset}"
+      echo "[info] Xray запущен" >> "$xkeen_info_log"
     else
-      echo \"xray не запущен\"
+      echo -e "  Xray ${red}не запущен${reset}"
+      echo "[info] Xray не запущен" >> "$xkeen_info_log"
     fi
     ;;
   restart)
     stop
-    wait_for_process \"\$(cat \$pidfile)\"
+    if [ -f $pidfile ]; then
+      local pid=$(cat $pidfile)
+      wait_for_process "$pid"
+    fi
     start
     ;;
   *)
-    echo \"Команды: \$0 {start|stop|restart|status}\"
+    echo -e "  Команды: ${green}start${reset} | ${red}stop${reset} | ${yellow}restart${reset} | status"
     ;;
 esac
 
 exit 0
-"
-  
-  # Создание или замена файла
-  if [ -e "$initd_file" ]; then
-    rm "$initd_file"
-  fi
 
-  echo "$script_content" > "$initd_file"
-  chmod +x "$initd_file"
+'
+
+# Создание или замена файла
+if [ -e "$initd_file" ]; then
+    rm "$initd_file"
+fi
+
+echo "$script_content" > "$initd_file"
+chmod +x "$initd_file"
 }

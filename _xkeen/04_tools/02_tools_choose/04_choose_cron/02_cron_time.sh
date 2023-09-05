@@ -1,7 +1,7 @@
 # Определение времени для задач cron
 
 choose_cron_time() {
-    for task in xkeen xray geodata geoip all; do
+    for task in xkeen xray geosite geoip all; do
         task_var="chose_${task}_cron_select"
         time_var="chose_${task}_cron_time"
 
@@ -23,7 +23,7 @@ choose_cron_time() {
             echo "     6. Суббота"
             echo "     7. Воскресенье"
             echo "     8. Ежедневно"
-			echo
+            echo
 
             local day_choice
             while true; do
@@ -42,9 +42,9 @@ choose_cron_time() {
                     echo
                     read -p "  Выберите час (0-23): " hour
                     while [[ ! "$hour" =~ ^[0-9]+$ || "$hour" -lt 0 || "$hour" -gt 23 ]]; do
-						echo -e "  ${red}Некорректный час.${reset} Пожалуйста, попробуйте снова"
-						read -p "  Введите значение от 0 до 23: " hour
-					done
+                        echo -e "  ${red}Некорректный час.${reset} Пожалуйста, попробуйте снова"
+                        read -p "  Введите значение от 0 до 23: " hour
+                    done
 
                     read -p "  Выберите минуту (0-59): " minute
                     while [[ ! "$minute" =~ ^[0-9]+$ || "$minute" -lt 0 || "$minute" -gt 59 ]]; do
@@ -56,13 +56,13 @@ choose_cron_time() {
                     cron_display="$minute $hour * * *"
                 else
                     echo
-                    read -p "Выберите час (0-23): " hour
+                    read -p "  Выберите час (0-23): " hour
                     while [[ ! "$hour" =~ ^[0-9]+$ || "$hour" -lt 0 || "$hour" -gt 23 ]]; do
                         echo -e "  ${red}Некорректный час.${reset} Пожалуйста, попробуйте снова"
                         read -p "  Введите значение от 0 до 23: " hour
                     done
 
-                    read -p "Выберите минуту (0-59): " minute
+                    read -p "  Выберите минуту (0-59): " minute
                     while [[ ! "$minute" =~ ^[0-9]+$ || "$minute" -lt 0 || "$minute" -gt 59 ]]; do
                         echo -e "  ${red}Некорректные минуты.${reset} Пожалуйста, попробуйте снова"
                         read -p "  Введите значение от 0 до 59: " minute
@@ -99,10 +99,10 @@ choose_cron_time() {
                 esac
 
                 if [ "$task" = "all" ]; then
-					echo
-                    echo -e "  Выбранное время автоматического обновления для всех задач: $day_name в $formatted_hour:$formatted_minute"
+                    echo
+                    echo -e "  Выбранное время автоматического обновления для ${yellow}всех${reset} задач: $day_name в $formatted_hour:$formatted_minute"
                 else
-					echo
+                    echo
                     echo -e "  Выбранное время автоматического обновления ${yellow}$task${reset}: $day_name в $formatted_hour:$formatted_minute"
                 fi
 

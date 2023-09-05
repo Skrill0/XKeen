@@ -24,10 +24,10 @@ info_cron() {
         info_update_geoip_cron="not_installed"
     fi
     
-    # Проверяем наличие задачи с ключевым словом "ugdc" в crontab
-    if echo "$cron_output" | grep -q "ugdc"; then
-        info_update_geodata_cron="installed"
+    # Проверяем наличие задачи с ключевым словом "ugsc" в crontab
+    if echo "$cron_output" | grep -q "ugsc"; then
+        info_update_geosite_cron="installed"
     else
-        info_update_geodata_cron="not_installed"
+        info_update_geosite_cron="not_installed"
     fi
 }

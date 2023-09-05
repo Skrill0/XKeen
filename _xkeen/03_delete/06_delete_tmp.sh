@@ -7,6 +7,7 @@ delete_tmp() {
     if [ -f "$cron_dir/root.tmp" ]; then
         rm "$cron_dir/root.tmp"
     fi
-	
-	echo "Очистка временных файлов после Xkeen"
+	echo -e "  Приступаю к ${yellow}очистке временных файлов${reset} после работы Xkeen…"
+	sleep 1
+	echo -e "  Очистка временных файлов после работы Xkeen ${green}успешно выполнена${reset}"
 }

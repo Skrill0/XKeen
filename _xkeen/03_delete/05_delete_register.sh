@@ -1,7 +1,7 @@
 # Удаление регистрации xray
 delete_register_xray() {
     # Удаляем соответствующие записи из файла статуса opkg
-    sed -i -e '/package: xray/,/installed-time:/d' "/opt/lib/opkg/status"
+    sed -i -e '/Package: xray/,/Installed-Time:/d' "/opt/lib/opkg/status"
     
     # Удаляем файлы регистрации, если они существуют
     if [ -f "$register_dir/xray.control" ] || [ -f "$register_dir/xray.list" ]; then
@@ -12,7 +12,7 @@ delete_register_xray() {
 # Удаление регистрации xkeen
 delete_register_xkeen() {
     # Удаляем соответствующие записи из файла статуса opkg
-    sed -i -e '/package: xkeen/,/installed-time:/d' "/opt/lib/opkg/status"
+    sed -i -e '/Package: xkeen/,/Installed-Time:/d' "/opt/lib/opkg/status"
     
     # Удаляем файлы регистрации, если они существуют
     if [ -f "$register_dir/xkeen.control" ] || [ -f "$register_dir/xkeen.list" ]; then

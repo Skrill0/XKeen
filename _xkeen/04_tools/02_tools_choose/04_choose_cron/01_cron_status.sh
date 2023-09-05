@@ -6,10 +6,10 @@ choose_update_cron() {
 
     [ "$info_update_xkeen_cron" != "installed" ] && has_missing_cron_tasks=true
     [ "$info_update_xray_cron" != "installed" ] && has_missing_cron_tasks=true
-    [ "$info_update_geodata_cron" != "installed" ] && has_missing_cron_tasks=true
+    [ "$info_update_geosite_cron" != "installed" ] && has_missing_cron_tasks=true
     [ "$info_update_geoip_cron" != "installed" ] && has_missing_cron_tasks=true
 
-    [ "$info_update_xkeen_cron" = "installed" ] || [ "$info_update_xray_cron" = "installed" ] || [ "$info_update_geodata_cron" = "installed" ] || [ "$info_update_geoip_cron" = "installed" ] && has_updatable_cron_tasks=true
+    [ "$info_update_xkeen_cron" = "installed" ] || [ "$info_update_xray_cron" = "installed" ] || [ "$info_update_geosite_cron" = "installed" ] || [ "$info_update_geoip_cron" = "installed" ] && has_updatable_cron_tasks=true
 
     echo
     echo
@@ -32,13 +32,13 @@ choose_update_cron() {
 
     [ "$info_update_xkeen_cron" != "installed" ] && xkeen_choice="Включить" || xkeen_choice="Обновить"
     [ "$info_update_xray_cron" != "installed" ] && xray_choice="Включить" || xray_choice="Обновить"
-    [ "$info_update_geodata_cron" != "installed" ] && geodata_choice="Включить" || geodata_choice="Обновить"
+    [ "$info_update_geosite_cron" != "installed" ] && geosite_choice="Включить" || geosite_choice="Обновить"
     [ "$info_update_geoip_cron" != "installed" ] && geoip_choice="Включить" || geoip_choice="Обновить"
 
-    echo "     3. $xkeen_choice xkeen"
-    echo "     4. $xray_choice xray"
-    echo "     5. $geodata_choice geodata"
-    echo "     6. $geoip_choice geoip"
+    echo "     3. $xkeen_choice Xkeen"
+    echo "     4. $xray_choice Xray"
+    echo "     5. $geosite_choice GeoSite"
+    echo "     6. $geoip_choice GeoIP"
 
     if [ "$has_updatable_cron_tasks" = true ]; then
         echo "     99. Выключить все"
@@ -74,8 +74,8 @@ choose_update_cron() {
                         chose_xray_cron_select=true
                     fi
 
-                    if [ "$info_update_geodata_cron" = "not_installed" ]; then
-                        chose_geodata_cron_select=true
+                    if [ "$info_update_geosite_cron" = "not_installed" ]; then
+                        chose_geosite_cron_select=true
                     fi
 
                     if [ "$info_update_geoip_cron" = "not_installed" ]; then
@@ -86,7 +86,7 @@ choose_update_cron() {
                         chose_all_cron_select=true
                         chose_xkeen_cron_select=false
                         chose_xray_cron_select=false
-                        chose_geodata_cron_select=false
+                        chose_geosite_cron_select=false
                         chose_geoip_cron_select=false
                     else
                         chose_all_cron_select=false
@@ -99,13 +99,13 @@ choose_update_cron() {
                                 chose_all_cron_select=true
                                 chose_xkeen_cron_select=false
                                 chose_xray_cron_select=false
-                                chose_geodata_cron_select=false
+                                chose_geosite_cron_select=false
                                 chose_geoip_cron_select=false
                             else
                                 chose_all_cron_select=false
                                 chose_xkeen_cron_select=true
                                 chose_xray_cron_select=true
-                                chose_geodata_cron_select=true
+                                chose_geosite_cron_select=true
                                 chose_geoip_cron_select=true
                             fi
                         else
@@ -124,8 +124,8 @@ choose_update_cron() {
                         chose_xray_cron_select=true
                     fi
 
-                    if [ "$info_update_geodata_cron" = "installed" ]; then
-                        chose_geodata_cron_select=true
+                    if [ "$info_update_geosite_cron" = "installed" ]; then
+                        chose_geosite_cron_select=true
                     fi
 
                     if [ "$info_update_geoip_cron" = "installed" ]; then
@@ -136,7 +136,7 @@ choose_update_cron() {
                         chose_all_cron_select=true
                         chose_xkeen_cron_select=false
                         chose_xray_cron_select=false
-                        chose_geodata_cron_select=false
+                        chose_geosite_cron_select=false
                         chose_geoip_cron_select=false
                     else
                         chose_all_cron_select=false
@@ -175,12 +175,12 @@ choose_update_cron() {
                 fi
                 ;;
             5)
-                if [ "$info_update_geodata_cron" = "installed" ]; then
-                    chose_geodata_cron_select=true
-                    echo -e "  Будет выполнено обновление задачи ${yellow}GeoData${reset}"
+                if [ "$info_update_geosite_cron" = "installed" ]; then
+                    chose_geosite_cron_select=true
+                    echo -e "  Будет выполнено обновление задачи ${yellow}GeoSite${reset}"
                 else
-                    chose_geodata_cron_select=true
-                    echo -e "  Будет выполнено включение задачи ${yellow}GeoData${reset}"
+                    chose_geosite_cron_select=true
+                    echo -e "  Будет выполнено включение задачи ${yellow}GeoSite${reset}"
                 fi
                 ;;
             6)
