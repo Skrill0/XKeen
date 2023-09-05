@@ -26,7 +26,7 @@ install_xkeen_rename
 
 # Очищаем журнал перед работой
 	logs_clear
-
+	
 # Проверяем установку пакетов
 	info_packages
 	logs_packages_info_xkeen
@@ -39,9 +39,9 @@ install_xkeen_rename
 	info_xray
 	logs_xray_info_xkeen
 
-# Проверяем установленные базы geodata
-	info_geodata
-	logs_geodata_info_xkeen
+# Проверяем установленные базы geosite
+	info_geosite
+	logs_geosite_info_xkeen
 	
 # Проверяем установленные базы geoip
 	info_geoip
@@ -77,7 +77,7 @@ while [ $# -gt 0 ]; do
 	
         -i)	# Запуск полного цикла установки
 			# Устанавливаем xray			
-			eval "clear"
+			eval "clear"	
 				if [ "$xray_installed" = "not_installed" ]; then
 					download_xray
 					logs_download_xray_info_xkeen
@@ -97,7 +97,9 @@ while [ $# -gt 0 ]; do
 					
 					xray_current_version="actual"
 				fi
+				
 			eval "clear" 
+			logs_cpu_console
 			# Устанавливаем geoip
 				choose_geoip
 				logs_choose_geoip_info_xkeen
@@ -107,18 +109,18 @@ while [ $# -gt 0 ]; do
 					
 					install_geoip
 					logs_install_geoip_info_xkeen
-
-			eval "clear" 
-			# Устанавливаем geodata
-				choose_geodata
-				logs_choose_geodata_info_xkeen
-				
-					delete_geodata
-					logs_delete_geodata_info_xkeen
-										
-					install_geodata
-					logs_install_geodata_info_xkeen
 					
+			eval "clear" 
+			# Устанавливаем geosite
+				choose_geosite
+				logs_choose_geosite_info_xkeen
+				
+					delete_geosite
+					logs_delete_geosite_info_xkeen
+										
+					install_geosite
+					logs_install_geosite_info_xkeen
+						
 			eval "clear" 
 			# Настраиваем автоматические обновления
 				choose_update_cron
@@ -134,48 +136,82 @@ while [ $# -gt 0 ]; do
 			#	choose_cron_time
 					install_cron
 					logs_install_cron_info_xkeen
-					
+							
 			eval "clear" 
 			# Устанавливаем configs xray
 				install_configs
 				logs_install_configs_info_xkeen
-				
+								
 			# Удаляем предыдущие регистрации
 				delete_register_xkeen
 				logs_delete_register_xkeen_info_xkeen
-				
+								
 				delete_register_xray
-				
+				logs_delete_register_xray_info_xkeen
+								
 			# Регистрируем xray
 				register_xray_list
+				logs_register_xray_list_info_xkeen
+				
 				register_xray_control
+				logs_register_xray_control_info_xkeen
+				
 				register_xray_status
+				logs_register_xray_status_info_xkeen
+				
 				register_xray_initd
+				logs_register_xray_initd_info_xkeen
+				
 
 			# Регистрируем xkeen
 				register_xkeen_list
+				logs_register_xray_list_info_xkeen
+				
 				register_xkeen_control
+				logs_register_xray_control_info_xkeen
+				
 				register_xkeen_status
+				logs_register_xkeen_status_info_xkeen
+				
 
 			# Удаляем временные файлы
 				delete_tmp
+				logs_delete_tmp_info_xkeen
+				
             shift
             ;;
 			
         -ux)		#Запуск обновления xray
 			if [ "$info_compare_xray" = "update" ]; then
+				eval "/opt/etc/init.d/S24xray stop"
+				
 				backup_xray
+				
 				download_xray
+				logs_download_xray_info_xkeen
+				
 				install_xray
 				
 				delete_register_xray
+				logs_delete_register_xray_info_xkeen
+				logs_delete_register_xray_info_console
 				
 				register_xray_list
+				logs_register_xray_list_info_xkeen
+				logs_register_xray_list_info_console
+				
 				register_xray_control
+				logs_register_xray_control_info_xkeen
+				logs_register_xray_control_info_console
+				
 				register_xray_status
+				logs_register_xray_status_info_xkeen
+				logs_register_xray_status_info_console
+				
+				eval "/opt/etc/init.d/S24xray start"
 				
 				delete_tmp
-				
+				logs_delete_tmp_info_xkeen
 			fi
             shift
             ;;
@@ -184,40 +220,62 @@ while [ $# -gt 0 ]; do
         -uk)		#Запуск обновления xkeen
 			if [ "$info_compare_xkeen" = "update" ]; then
 				backup_xkeen	
+				
 				download_xkeen
+				logs_download_xkeen_info_xkeen
+				
 				install_xkeen
 				
 				delete_register_xkeen
+				logs_delete_register_xkeen_info_xkeen
+				logs_delete_register_xkeen_info_console
+
 				
 				register_xkeen_list
+				logs_register_xkeen_list_info_xkeen
+				logs_register_xkeen_list_info_console
+				
 				register_xkeen_control
+				logs_register_xkeen_control_info_xkeen
+				logs_register_xkeen_control_info_console
+				
 				register_xkeen_status
+				logs_register_xkeen_status_info_xkeen
+				logs_register_xkeen_status_info_console
 				
 				delete_tmp
+				logs_delete_tmp_info_xkeen
 			fi
             shift
             ;;
+						
+        -ugs)	#Запуск обновления баз geosite		
+			eval "/opt/etc/init.d/S24xray stop"
 			
-			
-        -ugd)	#Запуск обновления баз geodata		
-			if [ "$geo_exists_geodata_v2fly" = "installed" ]; then
-				install_v2fly_geodata="true"
+			if [ "$geo_exists_geosite_v2fly" = "installed" ]; then
+				install_v2fly_geosite="true"
             fi
 			
-			if [ "$geo_exists_geodata_antifilter" = "installed" ]; then
-                install_antifilter_geodata="true"
+			if [ "$geo_exists_geosite_antifilter" = "installed" ]; then
+                install_antifilter_geosite="true"
             fi
 						
-			if [ "$geo_exists_geodata_antizapret" = "installed" ]; then
-				install_antizapret_geodata="true"
+			if [ "$geo_exists_geosite_antizapret" = "installed" ]; then
+				install_antizapret_geosite="true"
             fi
 				
-				install_geodata
+				install_geosite
+				logs_install_geosite_info_xkeen
+				logs_install_geosite_info_console
+				
+			eval "/opt/etc/init.d/S24xray start"
             shift
             ;;
 			
 			
-        -ugi)		#Запуск обновления баз geoip				
+        -ugi)		#Запуск обновления баз geoip
+			eval "/opt/etc/init.d/S24xray stop"
+			
 			if [ "$geo_exists_geoip_v2fly" = "installed" ]; then
 				install_v2fly_geoip="true"
             fi
@@ -227,141 +285,209 @@ while [ $# -gt 0 ]; do
             fi
 				
 				install_geoip
+				logs_install_geoip_info_xkeen
+				logs_install_geoip_info_console
+				
+				
+			eval "/opt/etc/init.d/S24xray start"
             shift
             ;;
 			
 			
-		-uac)	#Создать или изменить существующее правило автоматического обновления xkeen, xray, geoip, geodata	
+		-uac)	#Создать или изменить существующие правила автоматического обновления Xkeen, Xray, GeoIP, GeoSite	
 				delete_cron_xkeen 2>/dev/null
 				delete_cron_xray 2>/dev/null
 				delete_cron_geoip 2>/dev/null
-				delete_cron_geodata 2>/dev/null
+				delete_cron_geosite 2>/dev/null
 				
                     chose_xkeen_cron_select=true
                     chose_xray_cron_select=true
-                    chose_geodata_cron_select=true
+                    chose_geosite_cron_select=true
                     chose_geoip_cron_select=true
 
 				if input_concordance_list "Хотите установить единое время для всех обновлений?"; then
                         chose_all_cron_select=true
                         chose_xkeen_cron_select=false
                         chose_xray_cron_select=false
-                        chose_geodata_cron_select=false
+                        chose_geosite_cron_select=false
                         chose_geoip_cron_select=false
                     else
                         chose_all_cron_select=false
 				fi
 					
 				choose_cron_time
+				logs_choose_cron_time_info_xkeen
 				
 				install_cron
+				logs_install_cron_info_xkeen
+				logs_install_cron_info_console
             shift
             ;;
 			
 			
 		-ukc)	#Создать или изменить существующее правило автоматического обновления xkeen
 				delete_cron_xkeen
+				logs_delete_cron_xkeen_info_xkeen
 				
 				chose_xkeen_cron_select=true
+				
 				choose_cron_time
+				logs_choose_cron_time_info_xkeen
 				
 				install_cron
+				logs_install_cron_info_xkeen
+				logs_install_cron_info_console
             shift
             ;;
 			
 			
 		-uxc)	#Создать или изменить существующее правило автоматического обновления xray
 				delete_cron_xray
+				logs_delete_cron_xray_info_xkeen
 				
 				chose_xray_cron_select=true
+				
 				choose_cron_time
+				logs_choose_cron_time_info_xkeen
 				
 				install_cron
+				logs_install_cron_info_xkeen
+				logs_install_cron_info_console
             shift
             ;;
 			
 			
-		-ugdc)	#Создать или изменить существующее правило автоматического обновления geodata
-				delete_cron_geodata
+		-ugsc)	#Создать или изменить существующее правило автоматического обновления geosite
+				delete_cron_geosite
+				logs_delete_cron_geosite_info_xkeen
 				
-				chose_geodata_cron_select=true
+				chose_geosite_cron_select=true
+				
 				choose_cron_time
+				logs_choose_cron_time_info_xkeen
 				
 				install_cron
+				logs_install_cron_info_xkeen
+				logs_install_cron_info_console
             shift
             ;;
 			
 			
 		-ugic)	#Создать или изменить существующее правило автоматического обновления geoip
 				delete_cron_geoip
+				logs_delete_cron_geoip_info_xkeen
 				
 				chose_geoip_cron_select=true
+				
 				choose_cron_time
+				logs_choose_cron_time_info_xkeen
 				
 				install_cron
+				logs_install_cron_info_xkeen
+				logs_install_cron_info_console
             shift
             ;;
 
 
 		-rx)	#Зарегистрировать xray
 				delete_register_xray
+				logs_delete_register_xray_info_xkeen
+				logs_delete_register_xray_info_console
+				
+				
 				register_xray_list
+				logs_register_xray_list_info_xkeen
+				logs_register_xray_list_info_console
+				
 				register_xray_control
+				logs_register_xray_control_info_xkeen
+				logs_register_xray_control_info_console
+				
 				register_xray_status
+				logs_register_xray_status_info_xkeen
+				logs_register_xray_status_info_console
             shift
             ;;
 			
 
 		-ri)	#Создать правило автоматического запуска xkeen
+				eval "/opt/etc/init.d/S24xray stop"
+				
 				register_xray_initd
+				logs_register_xray_initd_info_xkeen
+				logs_register_xray_initd_info_console
+				
+				eval "/opt/etc/init.d/S24xray start"
             shift
             ;;
 			
 
 		-rk)	#Зарегистрировать xkeen
-				delete_register_xkeen
+				delete_register_xkeen				
+				logs_delete_register_xkeen_info_xkeen
+				logs_delete_register_xkeen_info_console
+				
 				register_xkeen_list
+				logs_register_xkeen_list_info_xkeen
+				logs_register_xkeen_list_info_console
+				
 				register_xkeen_control
+				logs_register_xkeen_control_info_xkeen
+				logs_register_xkeen_control_info_console
+				
 				register_xkeen_status
+				logs_register_xkeen_status_info_xkeen
+				logs_register_xkeen_status_info_console
             shift
             ;;
 			
 
 			
-		-dac)	#Удалить правила автоматического обновления xkeen, xray, geodata, geoip
+		-dac)	#Удалить правила автоматического обновления Xkeen, Xray, GeoSite, GeoIP
 				delete_cron_xkeen
 				delete_cron_xray
-				delete_cron_geodata
+				delete_cron_geosite
 				delete_cron_geoip
+				logs_delete_cron_task_info_xkeen
+				logs_delete_cron_task_info_console
             shift
             ;;
 			
 			
 		-dkc)		#Удалить правило автоматического обновления xkeen
 				delete_cron_xkeen
+				logs_delete_cron_xkeen_info_xkeen
+				logs_delete_cron_xkeen_info_console
             shift
             ;;
 			
 
 		-dxc)		#Удалить правило автоматического обновления xray
 				delete_cron_xray
+				logs_delete_cron_xray_info_xkeen
+				logs_delete_cron_xray_info_console
             shift
             ;;
 			
 
-		-dgdc)		#Удалить правило автоматического обновления geodata
-				delete_cron_geodata
+		-dgsc)		#Удалить правило автоматического обновления geosite
+				delete_cron_geosite
+				logs_delete_cron_geosite_info_xkeen
+				logs_delete_cron_geosite_info_console
             shift
             ;;
 			
 			
 		-dgic)		#Удалить правило автоматического обновления geoip
 				delete_cron_geoip
+				logs_delete_cron_geoip_info_xkeen
+				logs_delete_cron_geoip_info_console
             shift
             ;;
 			
 			
 		-dx)	#Удалить xray
+				eval "/opt/etc/init.d/S24xray stop"
 				eval "opkg remove xray"
             shift
             ;;
@@ -373,47 +499,76 @@ while [ $# -gt 0 ]; do
             ;;
 			
 			
-		-dgd)	#Удалить базы geodata
-				delete_geodata_key
+		-dgs)	#Удалить базы geosite
+				eval "/opt/etc/init.d/S24xray stop"
+				
+				delete_geosite_key
+				logs_delete_geosite_info_xkeen
+				logs_delete_geosite_info_console
+				
+				eval "/opt/etc/init.d/S24xray start"
             shift
             ;;
 			
 			
 		-dgi)	#Удалить базы geoip
+				val "/opt/etc/init.d/S24xray stop"
+				
 				delete_geoip_key
+				logs_delete_geoip_info_xkeen
+				logs_delete_geoip_info_console
+				
+				eval "/opt/etc/init.d/S24xray start"
             shift
             ;;
 			
 			
 		-dt)	#Удалить временные файлы xkeen
 				delete_tmp
+				logs_delete_tmp_info_xkeen
             shift
             ;;
 			
 			
 		-dс)	#Удалить все конфиги xray
 				delete_configs
+				logs_delete_configs_info_console
+				logs_delete_configs_info_xkeen				
             shift
             ;;
 			
 			
 		-drx)	#Удалить регистрации xray
 				delete_register_xray
+				logs_delete_register_xray_info_xkeen
             shift
             ;;
 			
 
 		-drk)	#Удалить регистрации xkeen
 				delete_register_xkeen
+				logs_delete_register_xkeen_info_xkeen
+				logs_delete_register_xkeen_info_console
             shift
             ;;
 
 
 		-rrk)	#Обновить регистрацию xkeen
 				delete_register_xkeen
+				logs_delete_register_xkeen_info_xkeen
+				logs_delete_register_xkeen_info_console
+				
 				register_xkeen_list
+				logs_register_xkeen_list_info_xkeen
+				logs_register_xkeen_list_info_console
+				
 				register_xkeen_control
+				logs_register_xkeen_control_info_xkeen
+				logs_register_xkeen_control_info_console
+				
 				register_xkeen_status
+				logs_register_xkeen_status_info_xkeen
+				logs_register_xkeen_status_info_console
 				
             shift
             ;;
@@ -421,36 +576,78 @@ while [ $# -gt 0 ]; do
 			
 		-rrx)	#Обновить регистрацию xray
 				delete_register_xray
+				logs_delete_register_xray_info_xkeen
+				logs_delete_register_xray_info_console
+				
 				register_xray_list
+				logs_register_xray_list_info_xkeen
+				logs_register_xray_list_info_console
+				
 				register_xray_control
-				register_xray_status		
+				logs_register_xray_control_info_xkeen
+				logs_register_xray_control_info_console
+				
+				register_xray_status
+				logs_register_xray_status_info_xkeen
+				logs_register_xray_status_info_console
             shift
             ;;
 				
 			
 		-rc)	#Переустановить конфиги xray
 				install_configs
+				logs_install_configs_info_xkeen
+				logs_install_configs_info_console
 				
 				delete_register_xray
+				logs_delete_register_xray_info_xkeen
+				logs_delete_register_xray_info_console
+				
 				register_xray_list
+				logs_register_xray_list_info_xkeen
+				logs_register_xray_list_info_console
+				
 				register_xray_control
+				logs_register_xray_control_info_xkeen
+				logs_register_xray_control_info_console
+				
 				register_xray_status
+				logs_register_xray_status_info_xkeen
+				logs_register_xray_status_info_console
             shift
             ;;
 			
 			
 		-x)	#Переустановить xray
 				eval "opkg remove xray" 
+				xray_installed="not_installed"
+				
 				download_xray
+				logs_download_xray_info_xkeen
+				
 				install_xray
 				xray_installed="installed"
 				
 				install_configs
+				logs_install_configs_info_xkeen
+				logs_install_configs_info_console
+				
+				
+				delete_register_xray
+				logs_delete_register_xray_info_xkeen
+				logs_delete_register_xray_info_console
 				
 				register_xray_list
+				logs_register_xray_list_info_xkeen
+				logs_register_xray_list_info_console
+				
 				register_xray_control
+				logs_register_xray_control_info_xkeen
+				logs_register_xray_control_info_console
+				
 				register_xray_status
-				register_xray_initd
+				logs_register_xray_status_info_xkeen
+				logs_register_xray_status_info_console
 				
 				if input_concordance_list "Хотите включить автоматическое обновление xray?"; then
                         chose_xray_cron_select=true
@@ -459,21 +656,38 @@ while [ $# -gt 0 ]; do
 				fi
 				
 				choose_cron_time
+				logs_choose_cron_time_info_xkeen
+				
 				install_cron
+				logs_install_cron_info_xkeen
+				logs_install_cron_info_console
 								
             shift
             ;;
 			
 			
 		-k)	#Переустановить xkeen
-				eval "opkg remove xkeen" 
-				download_xkeen
-				iinstall_xkeen
 				
-			
+				download_xkeen
+				logs_download_xkeen_info_xkeen
+				
+				install_xkeen
+				
+				delete_register_xkeen
+				logs_delete_register_xkeen_info_xkeen
+				logs_delete_register_xkeen_info_console
+										
 				register_xkeen_list
+				logs_register_xkeen_list_info_xkeen
+				logs_register_xkeen_list_info_console
+				
 				register_xkeen_control
+				logs_register_xkeen_control_info_xkeen
+				logs_register_xkeen_control_info_console
+				
 				register_xkeen_status
+				logs_register_xkeen_status_info_xkeen
+				logs_register_xkeen_status_info_console
 				
 				if input_concordance_list "Хотите включить автоматическое обновление xkeen?"; then
                         chose_xkeen_cron_select=true
@@ -482,9 +696,14 @@ while [ $# -gt 0 ]; do
 				fi
 				
 				choose_cron_time
+				logs_choose_cron_time_info_xkeen
+				
 				install_cron
+				logs_install_cron_info_xkeen
+				logs_install_cron_info_console
 								
 				delete_tmp
+				logs_delete_tmp_info_xkeen
 								
             shift
             ;;
@@ -541,12 +760,35 @@ while [ $# -gt 0 ]; do
             shift
             ;;
 			
-		-tests)	# Тестовый блок
-				create_custom_dat_file
+		-start)	# Запуск Xray
+				eval "/opt/etc/init.d/S24xray start" 
+				sleep 2
+				exec "$SHELL"
 				
             shift
-            ;;
+            ;;	
 			
+		-stop)	# Остановка Xray
+				eval "/opt/etc/init.d/S24xray stop" 
+				sleep 2
+				exec "$SHELL"
+				
+            shift
+            ;;		
+			
+		-restart)	# Перезапуск Xray
+				eval "/opt/etc/init.d/S24xray restart" 
+				sleep 2
+				exec "$SHELL"
+				
+            shift
+            ;;				
+			
+		-status)	# Проверка Xray
+				eval "/opt/etc/init.d/S24xray status" 
+				
+            shift
+            ;;		
 			
 		-arch)	# Подготавливает текущую сборку для релиза
 				archive_xkeen
@@ -562,63 +804,69 @@ while [ $# -gt 0 ]; do
 				echo "     Список доступных ключей запуска"
 				echo
 				echo -e "  ${yellow}Полный цикл установки${reset}"
-				echo -e "     ${green}-i${reset} — Необходимые пакеты, xray и сервисы xkeen"
+				echo -e "     ${green}-i${reset} — Необходимые пакеты, Xray и сервисы Xkeen"
 				echo 
 				echo -e "  ${yellow}Обновление${reset}"
-				echo -e "     ${green}-ux${reset} — xray"
-				echo -e "     ${green}-uk${reset} — xkeen"
-				echo -e "     ${green}-ugd${reset} — geodata"
-				echo -e "     ${green}-ugi${reset} — geoip"
+				echo -e "     ${green}-ux${reset} — Xray"
+				echo -e "     ${green}-uk${reset} — Xkeen"
+				echo -e "     ${green}-ugs${reset} — GeoSite"
+				echo -e "     ${green}-ugi${reset} — GeoIP"
 				echo 
 				echo -e "  ${yellow}Включение или изменение правил обновления${reset}"
-				echo -e "     ${green}-uac${reset} — xray, xkeen, geodata, geoip"
-				echo -e "     ${green}-uxc${reset} — xray"
-				echo -e "     ${green}-ukc${reset} — xkeen"
-				echo -e "     ${green}-ugdc${reset} — geodata"
-				echo -e "     ${green}-ugic ${reset}— geoip"
+				echo -e "     ${green}-uac${reset} — Xray, Xkeen, GeoSite, GeoIP"
+				echo -e "     ${green}-uxc${reset} — Xray"
+				echo -e "     ${green}-ukc${reset} — Xkeen"
+				echo -e "     ${green}-ugsc${reset} — GeoSite"
+				echo -e "     ${green}-ugic ${reset}— GeoIP"
 				echo 
 				echo -e "  ${yellow}Регистрация${reset}"
-				echo -e "     ${green}-rx${reset} — xray"
-				echo -e "     ${green}-rk${reset} — xkeen"
-				echo -e "     ${green}-ri${reset} — Автоматический запуск xray средствами init.d"
+				echo -e "     ${green}-rx${reset} — Xray"
+				echo -e "     ${green}-rk${reset} — Xkeen"
+				echo -e "     ${green}-ri${reset} — Автоматический запуск Xray средствами init.d"
 				echo 
 				echo -e "  ${red}Удаление${reset}  /  Автоматические обновления"
-				echo -e "     ${green}-dac${reset} — xray, xkeen, geodata, geoip"
-				echo -e "     ${green}-dkc${reset} — xkeen"
-				echo -e "     ${green}-dxc${reset} — xray"
-				echo -e "     ${green}-dgdc${reset} — geodata"
-				echo -e "     ${green}-dgic${reset} — geoip"
+				echo -e "     ${green}-dac${reset} — Xray, Xkeen, GeoSite, GeoIP"
+				echo -e "     ${green}-dkc${reset} — Xkeen"
+				echo -e "     ${green}-dxc${reset} — Xray"
+				echo -e "     ${green}-dgsc${reset} — GeoSite"
+				echo -e "     ${green}-dgic${reset} — GeoIP"
 				echo
 				echo -e "  ${red}Удаление${reset}  /  Утилиты и компоненты"
-				echo -e "     ${green}-dx${reset} — xray"
-				echo -e "     ${green}-dk${reset} — xkeen"
-				echo -e "     ${green}-dgd${reset} — geodata"
-				echo -e "     ${green}-dgi${reset} — geoip"
-				echo -e "     ${green}-dс${reset} — Конфигурации xray"
+				echo -e "     ${green}-dx${reset} — Xray"
+				echo -e "     ${green}-dk${reset} — Xkeen"
+				echo -e "     ${green}-dgs${reset} — GeoSite"
+				echo -e "     ${green}-dgi${reset} — GeoIP"
+				echo -e "     ${green}-dс${reset} — Конфигурации Xray"
 				echo -e "     ${green}-dt${reset} — Временные файлы"
 				echo
 				echo -e "  ${red}Удаление${reset}  /  Регистрации"			
-				echo -e "     ${green}-drx${reset} —  xray"
-				echo -e "     ${green}-drk${reset} — xkeen"
+				echo -e "     ${green}-drx${reset} —  Xray"
+				echo -e "     ${green}-drk${reset} — Xkeen"
 				echo
 				echo -e "  ${yellow}Обновление регистрации утилит${reset}"			
-				echo -e "     ${green}-rrx${reset} —  xray"
-				echo -e "     ${green}-rrk${reset} — xkeen"
+				echo -e "     ${green}-rrx${reset} —  Xray"
+				echo -e "     ${green}-rrk${reset} — Xkeen"
 				echo
 				echo -e "  ${yellow}Переустановка${reset}"		
-				echo -e "     ${green}-x${reset} — xray"
-				echo -e "     ${green}-k${reset} — xkeen"
-				echo -e "     ${green}-rc${reset} — Конфигурационные файлы xray"
+				echo -e "     ${green}-x${reset} — Xray"
+				echo -e "     ${green}-k${reset} — Xkeen"
+				echo -e "     ${green}-rc${reset} — Конфигурационные файлы Xray"
 				echo
 				echo -e "  ${yellow}Резервные копии${reset} / Создание"
-				echo -e "     ${green}-xb${reset} — xray"
-				echo -e "     ${green}-kb${reset} — xkeen"
-				echo -e "     ${green}-cb${reset} — Конфигурационные файлов xray"
+				echo -e "     ${green}-xb${reset} — Xray"
+				echo -e "     ${green}-kb${reset} — Xkeen"
+				echo -e "     ${green}-cb${reset} — Конфигурационные файлов Xray"
 				echo
 				echo -e "  ${yellow}Резервные копии${reset} / Восстановление последней"
-				echo -e "     ${green}-xbr${reset} — xray"
-				echo -e "     ${green}-kbr${reset} — xkeen"
-				echo -e "     ${green}-cbr${reset} — Конфигурационные файлы xray"
+				echo -e "     ${green}-xbr${reset} — Xray"
+				echo -e "     ${green}-kbr${reset} — Xkeen"
+				echo -e "     ${green}-cbr${reset} — Конфигурационные файлы Xray"
+				echo
+				echo -e "  ${yellow}Управление Xray${reset}"
+				echo -e "     ${green}-start${reset} — Запуск Xray"
+				echo -e "     ${green}-stop${reset} — Остановить Xray"
+				echo -e "     ${green}-restart${reset} — Перезапустить Xray"
+				echo -e "     ${green}-status${reset} — Показать текущий статус работы Xray"
 				echo
 				echo -e "  ${yellow}Автор${reset}"
 				echo -e "     ${green}-ad${reset} — Если Вам полезна утилита, можете купить Мне кофе"
