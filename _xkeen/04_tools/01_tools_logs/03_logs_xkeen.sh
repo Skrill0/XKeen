@@ -1041,7 +1041,7 @@ logs_delete_cron_task_info_xkeen() {
     
     if [ -f "$cron_dir/$cron_file" ]; then
         if [ "$chose_all_cron_select" = true ] || [ "$chose_delete_all_cron_select" = true ]; then
-            grep -q "ugic\|ugdc\|uxc\|ukc" "$cron_dir/$cron_file"
+            grep -q "ugi\|ugs\|ux\|uk" "$cron_dir/$cron_file"
             if [ $? -eq 1 ]; then
                 info_content="\t[info] Все задачи автоматического обновления удалены из cron"
             fi
@@ -1077,7 +1077,7 @@ logs_delete_cron_xkeen_info_xkeen() {
     local info_content=""
     
     if [ -f "$cron_dir/$cron_file" ]; then
-        grep -q "ukc" "$cron_dir/$cron_file"
+        grep -q "uk" "$cron_dir/$cron_file"
         if [ $? -eq 1 ]; then
             info_content="\t[info] Задача автоматического обновления для Xkeen удалена из cron"
         fi
@@ -1096,7 +1096,7 @@ logs_delete_cron_xray_info_xkeen() {
     local info_content=""
     
     if [ -f "$cron_dir/$cron_file" ]; then
-        grep -q "uxc" "$cron_dir/$cron_file"
+        grep -q "ux" "$cron_dir/$cron_file"
         if [ $? -eq 1 ]; then
             info_content="\t[info] Задача автоматического обновления для Xray удалена из cron"
         fi
@@ -1115,16 +1115,16 @@ logs_delete_cron_geosite_info_xkeen() {
     local info_content=""
     
     if [ -f "$cron_dir/$cron_file" ]; then
-        grep -q "ugdc" "$cron_dir/$cron_file"
+        grep -q "ugs" "$cron_dir/$cron_file"
         if [ $? -eq 1 ]; then
-            info_content="\t[info] Задача автоматического обновления для GeoData удалена из cron"
+            info_content="\t[info] Задача автоматического обновления для GeoSite удалена из cron"
         fi
         
         if [ -n "$info_content" ]; then
             echo "" >> "$xkeen_info_log"
-            echo "[start] Удаление задачи автоматического обновления GeoData из cron" >> "$xkeen_info_log"
+            echo "[start] Удаление задачи автоматического обновления GeoSite из cron" >> "$xkeen_info_log"
             echo -e "$info_content" >> "$xkeen_info_log"
-            echo "[end] Удаление задачи автоматического обновления GeoData из cron выполнено" >> "$xkeen_info_log"
+            echo "[end] Удаление задачи автоматического обновления GeoSite из cron выполнено" >> "$xkeen_info_log"
             echo "" >> "$xkeen_info_log"
         fi
     fi
@@ -1134,7 +1134,7 @@ logs_delete_cron_geoip_info_xkeen() {
     local info_content=""
     
     if [ -f "$cron_dir/$cron_file" ]; then
-        grep -q "ugic" "$cron_dir/$cron_file"
+        grep -q "ugi" "$cron_dir/$cron_file"
         if [ $? -eq 1 ]; then
             info_content="\t[info] Задача автоматического обновления для GeoIP удалена из cron"
         fi
@@ -1458,6 +1458,35 @@ logs_delete_register_xkeen_info_xkeen() {
     fi
 }
 
+logs_register_cron_initd_info_xkeen() {
+    local info_content=""
+    local error_content=""
+
+    initd_file="$initd_dir/S05crond"
+
+    if [ -f "$initd_file" ]; then
+        info_content="\t[info] init скрипт Cron найден в директории «$initd_dir/»"
+    else
+        error_content="\t[error] init скрипт Cron не найден в директории «$initd_dir/»"
+    fi
+    
+    if [ -n "$info_content" ]; then
+        echo "" >> "$xkeen_info_log"
+        echo "[start] Проверка наличия init скрипта Cron" >> "$xkeen_info_log"
+        echo -e "$info_content" >> "$xkeen_info_log"
+        echo "[end] Проверка наличия init Cron выполнена" >> "$xkeen_info_log"
+		echo "" >> "$xkeen_info_log"
+    fi
+    
+    if [ -n "$error_content" ]; then
+        echo "" >> "$xkeen_error_log"
+        echo "[start] Создание или замена файла init скрипта Cron" >> "$xkeen_error_log"
+        echo -e "$error_content" >> "$xkeen_error_log"
+        echo "[end] Создание или замена файла init скрипта Cron выполнена" >> "$xkeen_error_log"
+		echo "" >> "$xkeen_error_log"
+    fi
+}
+
 logs_delete_tmp_info_xkeen() {
     local info_content=""
     local error_content=""
@@ -1478,7 +1507,7 @@ logs_delete_tmp_info_xkeen() {
         echo "" >> "$xkeen_error_log"
         echo "[start] Удаление временной директории" >> "$xkeen_error_log"
         echo -e "$error_content" >> "$xkeen_error_log"
-        echo "[end] Удаление временной директории завершилось с ошибками" >> "$xkeen_error_log"
+        echo "[end] Удаление временной директории выполнена" >> "$xkeen_error_log"
         echo "" >> "$xkeen_error_log"
     fi
 
@@ -1487,6 +1516,613 @@ logs_delete_tmp_info_xkeen() {
         echo "[start] Удаление временной директории" >> "$xkeen_info_log"
         echo -e "$info_content" >> "$xkeen_info_log"
         echo "[end] Удаление временной директории выполнено" >> "$xkeen_info_log"
+        echo "" >> "$xkeen_info_log"
+    fi
+}
+
+logs_file_check_xray_xkeen() {
+    local info_content=""
+    local error_content=""
+	
+	if [ ! -f "/opt/sbin/xray" ]; then
+		error_content="$error_content\t[error] Файл «xray» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «xray» найден\n"
+	fi
+
+	if [ ! -f "/opt/etc/xray/dat/geosite_antifilter.dat" ]; then
+		error_content="$error_content\t[error] Файл «geosite_antifilter.dat» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «geosite_antifilter.dat» найден\n"
+	fi
+
+	if [ ! -f "/opt/etc/xray/dat/geosite_antizapret.dat" ]; then
+		error_content="$error_content\t[error] Файл «geosite_antizapret.dat» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «geosite_antizapret.dat» найден\n"
+	fi
+
+	if [ ! -f "/opt/etc/xray/dat/geosite_v2fly.dat" ]; then
+		error_content="$error_content\t[error] Файл «geosite_v2fly.dat» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «geosite_v2fly.dat» найден\n"
+	fi
+
+	if [ ! -f "/opt/etc/xray/dat/geoip_antifilter.dat" ]; then
+		error_content="$error_content\t[error] Файл «geoip_antifilter.dat» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «geoip_antifilter.dat» найден\n"
+	fi
+
+	if [ ! -f "/opt/etc/xray/dat/geoip_v2fly.dat" ]; then
+		error_content="$error_content\t[error] Файл «geoip_v2fly.dat» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «geoip_v2fly.dat» найден\n"
+	fi
+
+	if [ ! -f "/opt/etc/xray/configs/01_log.json" ]; then
+		error_content="$error_content\t[error] Файл «01_log.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «01_log.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/etc/xray/configs/02_stats.json" ]; then
+		error_content="$error_content\t[error] Файл «02_stats.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «02_stats.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/etc/xray/configs/03_dns.json" ]; then
+		error_content="$error_content\t[error] Файл «03_dns.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «03_dns.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/etc/xray/configs/04_reverse.json" ]; then
+		error_content="$error_content\t[error] Файл «04_reverse.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «04_reverse.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/etc/xray/configs/05_fake-dns.json" ]; then
+		error_content="$error_content\t[error] Файл «05_fake-dns.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «05_fake-dns.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/etc/xray/configs/06_transport.json" ]; then
+		error_content="$error_content\t[error] Файл «06_transport.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «06_transport.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/etc/xray/configs/07_inbounds.json" ]; then
+		error_content="$error_content\t[error] Файл «07_inbounds.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «07_inbounds.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/etc/xray/configs/08_outbounds.json" ]; then
+		error_content="$error_content\t[error] Файл «08_outbounds.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «08_outbounds.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/etc/xray/configs/09_policy.json" ]; then
+		error_content="$error_content\t[error] Файл «09_policy.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «09_policy.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/etc/xray/configs/10_routing.json" ]; then
+		error_content="$error_content\t[error] Файл «10_routing.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «10_routing.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/etc/init.d/S24xray" ]; then
+		error_content="$error_content\t[error] Файл «S24xray» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «S24xray» найден\n"
+	fi
+
+	if [ ! -f "/opt/var/log/xray/error.log" ]; then
+		error_content="$error_content\t[error] Файл «error.log» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «error.log» найден\n"
+	fi
+
+	if [ ! -f "/opt/var/log/xray/access.log" ]; then
+		error_content="$error_content\t[error] Файл «access.log» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «access.log» найден\n"
+	fi
+
+	if [ ! -f "/opt/var/run/xray.pid" ]; then
+		error_content="$error_content\t[error] Файл «xray.pid» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «xray.pid» найден\n"
+	fi
+
+
+    if [ -n "$error_content" ]; then
+        echo "" >> "$xkeen_error_log"
+        echo "[start] Проверка установленных файлов Xray" >> "$xkeen_error_log"
+        echo -e "$error_content" | sed '/^$/d' >> "$xkeen_error_log"
+        echo "[end] Проверка установленных файлов Xray выполнена" >> "$xkeen_error_log"
+        echo "" >> "$xkeen_error_log"
+    fi
+	
+    if [ -n "$info_content" ]; then
+        echo "" >> "$xkeen_info_log"
+        echo "[start] Проверка установленных файлов Xray" >> "$xkeen_info_log"
+        echo -e "$info_content" | sed '/^$/d' >> "$xkeen_info_log"
+        echo "[end] Проверка установленных файлов Xray выполнена" >> "$xkeen_info_log"
+        echo "" >> "$xkeen_info_log"
+    fi
+}
+
+logs_file_check_xkeen_xkeen() {
+    local info_content=""
+    local error_content=""
+		
+	if [ ! -f "/opt/sbin/xkeen" ]; then
+		error_content="$error_content\t[error] Файл «xkeen» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «xkeen» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/import.sh" ]; then
+		error_content="$error_content\t[error] Файл «import.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «import.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/author.sh" ]; then
+		error_content="$error_content\t[error] Файл «author.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «author.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/01_info/00_info_import.sh" ]; then
+		error_content="$error_content\t[error] Файл «00_info_import.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «00_info_import.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/01_info/01_info_variable.sh" ]; then
+		error_content="$error_content\t[error] Файл «01_info_variable.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «01_info_variable.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/01_info/02_info_packages.sh" ]; then
+		error_content="$error_content\t[error] Файл «02_info_packages.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «02_info_packages.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/01_info/03_info_cpu.sh" ]; then
+		error_content="$error_content\t[error] Файл «03_info_cpu.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «03_info_cpu.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/01_info/04_info_xray.sh" ]; then
+		error_content="$error_content\t[error] Файл «04_info_xray.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «04_info_xray.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/01_info/05_info_geosite.sh" ]; then
+		error_content="$error_content\t[error] Файл «05_info_geosite.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «05_info_geosite.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/01_info/06_info_geoip.sh" ]; then
+		error_content="$error_content\t[error] Файл «06_info_geoip.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «06_info_geoip.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/01_info/07_info_cron.sh" ]; then
+		error_content="$error_content\t[error] Файл «07_info_cron.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «07_info_cron.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/01_info/08_info_version/00_version_import.sh" ]; then
+		error_content="$error_content\t[error] Файл «00_version_import.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «00_version_import.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/01_info/08_info_version/01_version_xkeen.sh" ]; then
+		error_content="$error_content\t[error] Файл «01_version_xkeen.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «01_version_xkeen.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/01_info/08_info_version/02_version_xray.sh" ]; then
+		error_content="$error_content\t[error] Файл «02_version_xray.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «02_version_xray.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/01_info/09_info_compare/00_compare_import.sh" ]; then
+		error_content="$error_content\t[error] Файл «00_compare_import.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «00_compare_import.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/01_info/09_info_compare/01_compare_xkeen.sh" ]; then
+		error_content="$error_content\t[error] Файл «01_compare_xkeen.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «01_compare_xkeen.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/01_info/09_info_compare/02_compare_xray.sh" ]; then
+		error_content="$error_content\t[error] Файл «02_compare_xray.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «02_compare_xray.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/00_install_import.sh" ]; then
+		error_content="$error_content\t[error] Файл «00_install_import.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «00_install_import.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/01_install_packages.sh" ]; then
+		error_content="$error_content\t[error] Файл «01_install_packages.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «01_install_packages.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/02_install_xray.sh" ]; then
+		error_content="$error_content\t[error] Файл «02_install_xray.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «02_install_xray.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/03_install_xkeen.sh" ]; then
+		error_content="$error_content\t[error] Файл «03_install_xkeen.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «03_install_xkeen.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/04_install_geosite.sh" ]; then
+		error_content="$error_content\t[error] Файл «04_install_geosite.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «04_install_geosite.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/05_install_geoip.sh" ]; then
+		error_content="$error_content\t[error] Файл «05_install_geoip.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «05_install_geoip.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/06_install_cron.sh" ]; then
+		error_content="$error_content\t[error] Файл «06_install_cron.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «06_install_cron.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/07_install_register/00_register_import.sh" ]; then
+		error_content="$error_content\t[error] Файл «00_register_import.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «00_register_import.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/07_install_register/01_register_xray.sh" ]; then
+		error_content="$error_content\t[error] Файл «01_register_xray.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «01_register_xray.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/07_install_register/02_register_xkeen.sh" ]; then
+		error_content="$error_content\t[error] Файл «02_register_xkeen.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «02_register_xkeen.sh» найден\n"
+	fi
+	
+	if [ ! -f "/opt/sbin/.xkeen/02_install/07_install_register/03_register_cron.sh" ]; then
+		error_content="$error_content\t[error] Файл «03_register_cron.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «03_register_cron.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/08_install_configs/00_configs_import.sh" ]; then
+		error_content="$error_content\t[error] Файл «00_configs_import.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «00_configs_import.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/08_install_configs/01_configs_install.sh" ]; then
+		error_content="$error_content\t[error] Файл «01_configs_install.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «01_configs_install.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir/01_log.json" ]; then
+		error_content="$error_content\t[error] Файл «01_log.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «01_log.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir/02_stats.json" ]; then
+		error_content="$error_content\t[error] Файл «02_stats.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «02_stats.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir/03_dns.json" ]; then
+		error_content="$error_content\t[error] Файл «03_dns.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «03_dns.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir/04_reverse.json" ]; then
+		error_content="$error_content\t[error] Файл «04_reverse.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «04_reverse.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir/05_fake-dns.json" ]; then
+		error_content="$error_content\t[error] Файл «05_fake-dns.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «05_fake-dns.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir/06_transport.json" ]; then
+		error_content="$error_content\t[error] Файл «06_transport.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «06_transport.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir/07_inbounds.json" ]; then
+		error_content="$error_content\t[error] Файл «07_inbounds.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «07_inbounds.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir/08_outbounds.json" ]; then
+		error_content="$error_content\t[error] Файл «08_outbounds.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «08_outbounds.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir/09_policy.json" ]; then
+		error_content="$error_content\t[error] Файл «09_policy.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «09_policy.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir/10_routing.json" ]; then
+		error_content="$error_content\t[error] Файл «10_routing.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «10_routing.json» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/03_delete/00_delete_import.sh" ]; then
+		error_content="$error_content\t[error] Файл «00_delete_import.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «00_delete_import.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/03_delete/01_delete_geosite.sh" ]; then
+		error_content="$error_content\t[error] Файл «01_delete_geosite.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «01_delete_geosite.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/03_delete/02_delete_geoip.sh" ]; then
+		error_content="$error_content\t[error] Файл «02_delete_geoip.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «02_delete_geoip.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/03_delete/03_delete_cron.sh" ]; then
+		error_content="$error_content\t[error] Файл «03_delete_cron.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «03_delete_cron.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/03_delete/04_delete_configs.sh" ]; then
+		error_content="$error_content\t[error] Файл «04_delete_configs.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «04_delete_configs.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/03_delete/05_delete_register.sh" ]; then
+		error_content="$error_content\t[error] Файл «05_delete_register.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «05_delete_register.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/03_delete/06_delete_tmp.sh" ]; then
+		error_content="$error_content\t[error] Файл «06_delete_tmp.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «06_delete_tmp.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/01_tools_logs/00_logs_import.sh" ]; then
+		error_content="$error_content\t[error] Файл «00_logs_import.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «00_logs_import.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/01_tools_logs/01_logs_clear.sh" ]; then
+		error_content="$error_content\t[error] Файл «01_logs_clear.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «01_logs_clear.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/01_tools_logs/02_logs_console.sh" ]; then
+		error_content="$error_content\t[error] Файл «02_logs_console.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «02_logs_console.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/01_tools_logs/03_logs_xkeen.sh" ]; then
+		error_content="$error_content\t[error] Файл «03_logs_xkeen.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «03_logs_xkeen.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/02_tools_choose/00_choose_import.sh" ]; then
+		error_content="$error_content\t[error] Файл «00_choose_import.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «00_choose_import.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/02_tools_choose/01_choose_input.sh" ]; then
+		error_content="$error_content\t[error] Файл «01_choose_input.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «01_choose_input.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/02_tools_choose/02_choose_geosite.sh" ]; then
+		error_content="$error_content\t[error] Файл «02_choose_geosite.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «02_choose_geosite.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/02_tools_choose/03_choose_geoip.sh" ]; then
+		error_content="$error_content\t[error] Файл «03_choose_geoip.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «03_choose_geoip.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/02_tools_choose/04_choose_cron/00_cron_import.sh" ]; then
+		error_content="$error_content\t[error] Файл «00_cron_import.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «00_cron_import.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/02_tools_choose/04_choose_cron/01_cron_status.sh" ]; then
+		error_content="$error_content\t[error] Файл «01_cron_status.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «01_cron_status.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/02_tools_choose/04_choose_cron/02_cron_time.sh" ]; then
+		error_content="$error_content\t[error] Файл «02_cron_time.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «02_cron_time.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/03_tools_backups/00_backups_import.sh" ]; then
+		error_content="$error_content\t[error] Файл «00_backups_import.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «00_backups_import.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/03_tools_backups/01_backups_xray.sh" ]; then
+		error_content="$error_content\t[error] Файл «01_backups_xray.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «01_backups_xray.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/03_tools_backups/02_backups_configs.sh" ]; then
+		error_content="$error_content\t[error] Файл «02_backups_configs.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «02_backups_configs.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/03_tools_backups/02_backups_xkeen.sh" ]; then
+		error_content="$error_content\t[error] Файл «02_backups_xkeen.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «02_backups_xkeen.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/04_tools_downloaders/00_downloaders_import.sh" ]; then
+		error_content="$error_content\t[error] Файл «00_downloaders_import.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «00_downloaders_import.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/04_tools_downloaders/01_downloaders_xray.sh" ]; then
+		error_content="$error_content\t[error] Файл «01_downloaders_xray.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «01_downloaders_xray.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/04_tools_downloaders/02_donwloaders_xkeen.sh" ]; then
+		error_content="$error_content\t[error] Файл «02_donwloaders_xkeen.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «02_donwloaders_xkeen.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/00_tools_import.sh" ]; then
+		error_content="$error_content\t[error] Файл «00_tools_import.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «00_tools_import.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/05_tools_cpu-keyword.sh" ]; then
+		error_content="$error_content\t[error] Файл «05_tools_cpu-keyword.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «05_tools_cpu-keyword.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/06_tools_archive.sh" ]; then
+		error_content="$error_content\t[error] Файл «06_tools_archive.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «06_tools_archive.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/05_tests/00_tests_import.sh" ]; then
+		error_content="$error_content\t[error] Файл «00_tests_import.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «00_tests_import.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/05_tests/01_tests_connected.sh" ]; then
+		error_content="$error_content\t[error] Файл «01_tests_connected.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «01_tests_connected.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/sbin/.xkeen/05_tests/02_tests_xports.sh" ]; then
+		error_content="$error_content\t[error] Файл «02_tests_xports.sh» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «02_tests_xports.sh» найден\n"
+	fi
+
+	if [ ! -f "/opt/var/log/xkeen/error.log" ]; then
+		error_content="$error_content\t[error] Файл «error.log» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «error.log» найден\n"
+	fi
+
+	if [ ! -f "/opt/var/log/xkeen/info.log" ]; then
+		error_content="$error_content\t[error] Файл «info.log» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «info.log» найден\n"
+	fi
+
+	if [ ! -f "/opt/etc/init.d/S05crond" ]; then
+		error_content="$error_content\t[error] Файл «S05crond» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «S05crond» найден\n"
+	fi
+	
+    if [ -n "$error_content" ]; then
+        echo "" >> "$xkeen_error_log"
+        echo "[start] Проверка установленных файлов Xkeen" >> "$xkeen_error_log"
+        echo -e "$error_content" | sed '/^$/d' >> "$xkeen_error_log"
+        echo "[end] Проверка установленных файлов Xkeen выполнена" >> "$xkeen_error_log"
+        echo "" >> "$xkeen_error_log"
+    fi
+	
+    if [ -n "$info_content" ]; then
+        echo "" >> "$xkeen_info_log"
+        echo "[start] Проверка установленных файлов Xkeen" >> "$xkeen_info_log"
+        echo -e "$info_content" | sed '/^$/d' >> "$xkeen_info_log"
+        echo "[end] Проверка установленных файлов Xkeen выполнена" >> "$xkeen_info_log"
         echo "" >> "$xkeen_info_log"
     fi
 }

@@ -29,7 +29,6 @@ register_xkeen_list() {
 /opt/sbin/.xkeen/import.sh
 /opt/sbin/.xkeen/author.sh
 
-/opt/sbin/.xkeen/01_info/_variable_help.sh
 /opt/sbin/.xkeen/01_info/00_info_import.sh
 /opt/sbin/.xkeen/01_info/01_info_variable.sh
 /opt/sbin/.xkeen/01_info/02_info_packages.sh
@@ -62,11 +61,11 @@ register_xkeen_list() {
 /opt/sbin/.xkeen/02_install/07_install_register/00_register_import.sh
 /opt/sbin/.xkeen/02_install/07_install_register/01_register_xray.sh
 /opt/sbin/.xkeen/02_install/07_install_register/02_register_xkeen.sh
+/opt/sbin/.xkeen/02_install/07_install_register/03_register_cron.sh
 
 /opt/sbin/.xkeen/02_install/08_install_configs/00_configs_import.sh
 /opt/sbin/.xkeen/02_install/08_install_configs/01_configs_install.sh
 
-/opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir/00_base.json
 /opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir/01_log.json
 /opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir/02_stats.json
 /opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir/03_dns.json
@@ -128,8 +127,6 @@ register_xkeen_list() {
 /opt/sbin/.xkeen/05_tests/00_tests_import.sh
 /opt/sbin/.xkeen/05_tests/01_tests_connected.sh
 /opt/sbin/.xkeen/05_tests/02_tests_xports.sh
-/opt/sbin/.xkeen/05_tests/03_tests_socks5.sh
-/opt/sbin/.xkeen/05_tests/04_tests_reality.sh
 /opt/sbin/.xkeen/05_tests
 
 /opt/sbin/.xkeen

@@ -2,7 +2,7 @@
 install_geoip() {
     # Установка GeoIP AntiFilter
     if [ "$install_antifilter_geoip" = true ]; then
-        curl -L -o "$geo_dir/geoip_antifilter.dat" "https://github.com/schebotar/antifilter-domain/releases/latest/download/antifilter-domain.dat" > /dev/null 2>&1
+        curl -L -o "$geo_dir/geoip_antifilter.dat" "https://github.com/schebotar/antifilter/releases/latest/download/geoip.dat" > /dev/null 2>&1
         if [ $? -eq 0 ] && [ -s "$geo_dir/geoip_antifilter.dat" ]; then
             echo -e "  GeoIP AntiFilter ${green}успешно установлен${reset}"
         else
@@ -22,7 +22,7 @@ install_geoip() {
 
     # Обновление GeoIP AntiFilter, если установлены и требуется обновление
     if [ "$update_antifilter_geoip" = true ] && [ -f "$geo_dir/geoip_antifilter.dat" ]; then
-        curl -L -o "$geo_dir/geoip_antifilter.dat" "https://github.com/schebotar/antifilter-domain/releases/latest/download/antifilter-domain.dat" > /dev/null 2>&1
+        curl -L -o "$geo_dir/geoip_antifilter.dat" "https://github.com/schebotar/antifilter/releases/latest/download/geoip.dat" > /dev/null 2>&1
         if [ $? -eq 0 ] && [ -s "$geo_dir/geoip_antifilter.dat" ]; then
             echo -e "  GeoIP AntiFilter ${green}успешно обновлен${reset}"
         else

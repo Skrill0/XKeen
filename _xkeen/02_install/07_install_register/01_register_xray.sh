@@ -29,9 +29,9 @@ register_xray_list() {
 /opt/sbin/xray
 /opt/etc/xray/dat/geosite_antifilter.dat
 /opt/etc/xray/dat/geosite_antizapret.dat
-/opt/etc/xray/dat/geosite_v2ray.dat
+/opt/etc/xray/dat/geosite_v2fly.dat
 /opt/etc/xray/dat/geoip_antifilter.dat
-/opt/etc/xray/dat/geoip_v2ray.dat
+/opt/etc/xray/dat/geoip_v2fly.dat
 /opt/etc/dat
 /opt/etc/xray/configs/01_log.json
 /opt/etc/xray/configs/02_stats.json
@@ -39,7 +39,7 @@ register_xray_list() {
 /opt/etc/xray/configs/04_reverse.json
 /opt/etc/xray/configs/05_fake-dns.json
 /opt/etc/xray/configs/06_transport.json
-/opt/etc/xray/configs07_inbounds.json
+/opt/etc/xray/configs/07_inbounds.json
 /opt/etc/xray/configs/08_outbounds.json
 /opt/etc/xray/configs/09_policy.json
 /opt/etc/xray/configs/10_routing.json
@@ -76,7 +76,6 @@ Depends: libc, libssp, librt, libpthread, ca-bundle
 Status: install user installed
 Architecture: $status_architecture
 Conffiles:
-/opt/etc/xray/configs/00_base.json $HASH_00_base
 /opt/etc/xray/configs/01_log.json $HASH_01_log
 /opt/etc/xray/configs/02_stats.json $HASH_02_stats
 /opt/etc/xray/configs/03_dns.json $HASH_03_dns
@@ -142,12 +141,22 @@ start()
 {
   if xray_status; then
     echo -e "  Xray уже ${green}запущен${reset}"
-    echo "[info] Xray уже запущен" >> "$xkeen_info_log"
+	
+	echo "" >> "$xkeen_error_log"
+	echo "[start] Проверка статуса Xray" >> "$xkeen_error_log"
+    echo "	[error] Xray уже запущен" >> "$xkeen_error_log"
+	echo "[end] Проверка статуса Xray выполнена" >> "$xkeen_error_log"
+	echo "" >> "$xkeen_error_log"
   else
     $xray_path -confdir $xray_config &
     echo $! > $pidfile
-    echo -e "  Xray ${green}запущен${reset}"
-    echo "[info] Xray запущен" >> "$xkeen_info_log"
+	echo -e "  Xray ${green}запущен${reset}"
+	
+    echo "" >> "$xkeen_info_log"    
+	echo "[end] Проверка статуса Xray" >> "$xkeen_info_log"
+	echo "	[info] Xray запущен" >> "$xkeen_info_log"
+	echo "[end] Проверка статуса Xray выполнена" >> "$xkeen_info_log"
+	echo "" >> "$xkeen_info_log"
   fi
 }
 
@@ -158,10 +167,20 @@ stop()
     kill "$(cat $pidfile)"
     rm -f $pidfile
     echo -e "  Xray ${yellow}остановлен${reset}"
-    echo "[info] Xray остановлен" >> "$xkeen_info_log"
+	
+    echo "" >> "$xkeen_info_log"
+	echo "[start] Проверка статуса Xray" >> "$xkeen_info_log"
+	echo "	[info] Xray остановлен" >> "$xkeen_info_log"
+	echo "[end] Проверка статуса Xray выполнена" >> "$xkeen_info_log"
+	echo "" >> "$xkeen_info_log"
   else
     echo -e "  Xray ${red}не запущен${reset}"
-    echo "[error] Xray не был запущен" >> "$xkeen_error_log"
+	
+	echo "" >> "$xkeen_error_log"
+	echo "[start] Проверка статуса Xray" >> "$xkeen_error_log"
+    echo "	[error] Xray не был запущен" >> "$xkeen_error_log"
+	echo "[end] Проверка статуса Xray выполнена" >> "$xkeen_error_log"
+	echo "" >> "$xkeen_error_log"
   fi
 }
 
@@ -185,19 +204,30 @@ case "$1" in
   status)
     if xray_status; then
       echo -e "  Xray ${green}запущен${reset}"
-      echo "[info] Xray запущен" >> "$xkeen_info_log"
+	  
+	  echo "" >> "$xkeen_info_log"
+      echo "[start] Проверка статуса Xray" >> "$xkeen_info_log"
+	  echo "	[info] Xray запущен" >> "$xkeen_info_log"
+	  echo "[end] Проверка статуса Xray выполнена" >> "$xkeen_info_log"
+	  echo "" >> "$xkeen_info_log"
     else
-      echo -e "  Xray ${red}не запущен${reset}"
-      echo "[info] Xray не запущен" >> "$xkeen_info_log"
+	  echo -e "  Xray ${red}не запущен${reset}"
+	  
+	  echo "" >> "$xkeen_info_log"
+	  echo "[start] Проверка статуса Xray" >> "$xkeen_info_log"
+      echo "	[info] Xray не запущен" >> "$xkeen_info_log"
+	  echo "[end] Проверка статуса Xray выполнена" >> "$xkeen_info_log"
+	  echo "" >> "$xkeen_info_log"
     fi
     ;;
   restart)
-    stop
+    stop > /dev/null 2>&1
     if [ -f $pidfile ]; then
       local pid=$(cat $pidfile)
       wait_for_process "$pid"
     fi
-    start
+    start > /dev/null 2>&1
+    echo -e "  Xray ${green}перезапущен${reset}"
     ;;
   *)
     echo -e "  Команды: ${green}start${reset} | ${red}stop${reset} | ${yellow}restart${reset} | status"
@@ -205,7 +235,6 @@ case "$1" in
 esac
 
 exit 0
-
 '
 
 # Создание или замена файла

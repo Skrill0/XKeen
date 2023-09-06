@@ -12,7 +12,7 @@ install_geosite() {
 
     # Установка GeoSite AntiFilter
     if [ "$install_antifilter_geosite" = true ]; then
-        curl -L -o "$geo_dir/geosite_antifilter.dat" "https://github.com/schebotar/antifilter/releases/latest/download/antifilter.dat" > /dev/null 2>&1
+        curl -L -o "$geo_dir/geosite_antifilter.dat" "https://github.com/schebotar/antifilter-domain/releases/latest/download/geosite.dat" > /dev/null 2>&1
         if [ $? -eq 0 ] && [ -s "$geo_dir/geosite_antifilter.dat" ]; then
             echo -e "  GeoSite AntiFilter ${green}успешно установлен${reset}"
         else
@@ -42,7 +42,7 @@ install_geosite() {
 
     # Обновление GeoSite AntiFilter, если установлены и требуется обновление
     if [ "$update_antifilter_geosite" = true ] && [ -f "$geo_dir/geosite_antifilter.dat" ]; then
-        curl -L -o "$geo_dir/geosite_antifilter.dat" "https://github.com/schebotar/antifilter/releases/latest/download/antifilter.dat" > /dev/null 2>&1
+        curl -L -o "$geo_dir/geosite_antifilter.dat" "https://github.com/schebotar/antifilter-domain/releases/latest/download/geosite.dat" > /dev/null 2>&1	
         if [ $? -eq 0 ] && [ -s "$geo_dir/geosite_antifilter.dat" ]; then
             echo -e "  GeoSite AntiFilter ${green}успешно обновлен${reset}"
         else

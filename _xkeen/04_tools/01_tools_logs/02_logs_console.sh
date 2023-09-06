@@ -19,9 +19,9 @@ logs_delete_configs_info_console() {
     local deleted_files=$(find "$install_conf_dir" -name "*.json" -type f)
     
     if [ -z "$deleted_files" ]; then
-        echo -e "  ${green}Успешно:${reset} Все конфигурационные файлы Xray удалены"
+        echo -e "    ${green}Успешно:${reset} Все конфигурационные файлы Xray удалены"
     else
-        echo -e "  ${red}Ошибка:${reset} Не удалены следующие конфигурационные файлы:"
+        echo -e "    ${red}Ошибка:${reset} Не удалены следующие конфигурационные файлы:"
         for file in $deleted_files; do
             echo -e "     $file"
         done
@@ -45,9 +45,8 @@ logs_delete_geoip_info_console() {
     fi
 
     if [ -n "$error_content" ]; then
-        echo ""
+        echo -e "  ${yellow}Проверка${reset} выполнения операции"
         echo -e "$error_content"
-        echo ""
     else
 	echo ""
 		echo -e "  ${yellow}Проверка${reset} выполнения операции"
@@ -79,14 +78,11 @@ logs_delete_geosite_info_console() {
     fi
 
     if [ -n "$error_content" ]; then
-        echo ""
+        echo -e "  ${yellow}Проверка${reset} выполнения операции"
         echo -e "$error_content"
-        echo ""
     else
-        echo ""
         echo -e "  ${yellow}Проверка${reset} выполнения операции"
         echo -e "$info_content"
-        echo ""
     fi
 }
 
@@ -95,15 +91,13 @@ logs_delete_cron_geoip_info_console() {
     local info_content=""
     
     if [ -f "$cron_dir/$cron_file" ]; then
-        grep -q "ugic" "$cron_dir/$cron_file"
+        grep -q "ugi" "$cron_dir/$cron_file"
         if [ $? -eq 1 ]; then
             info_content="     ${green}Успешно:${reset} Задача автоматического обновления для GeoIP удалена из cron"
         fi
         
         if [ -n "$info_content" ]; then
-            echo ""
             echo -e "$info_content"
-            echo ""
         fi
     fi
 }
@@ -112,15 +106,13 @@ logs_delete_cron_geosite_info_console() {
     local info_content=""
     
     if [ -f "$cron_dir/$cron_file" ]; then
-        grep -q "ugdc" "$cron_dir/$cron_file"
+        grep -q "ugs" "$cron_dir/$cron_file"
         if [ $? -eq 1 ]; then
-            info_content="     ${green}Успешно:${reset} Задача автоматического обновления для GeoData удалена из cron"
+            info_content="     ${green}Успешно:${reset} Задача автоматического обновления для GeoSite удалена из cron"
         fi
         
         if [ -n "$info_content" ]; then
-            echo ""
             echo -e "$info_content"
-            echo ""
         fi
     fi
 }
@@ -129,15 +121,13 @@ logs_delete_cron_xray_info_console() {
     local info_content=""
     
     if [ -f "$cron_dir/$cron_file" ]; then
-        grep -q "uxc" "$cron_dir/$cron_file"
+        grep -q "ux" "$cron_dir/$cron_file"
         if [ $? -eq 1 ]; then
             info_content="     ${green}Успешно:${reset} Задача автоматического обновления для Xray удалена из cron"
         fi
         
         if [ -n "$info_content" ]; then
-            echo ""
-            echo -e "$info_content"
-            echo ""
+			echo -e "$info_content"
         fi
     fi
 }
@@ -146,15 +136,13 @@ logs_delete_cron_xkeen_info_console() {
     local info_content=""
     
     if [ -f "$cron_dir/$cron_file" ]; then
-        grep -q "ukc" "$cron_dir/$cron_file"
+        grep -q "uk" "$cron_dir/$cron_file"
         if [ $? -eq 1 ]; then
             info_content="     ${green}Успешно:${reset} Задача автоматического обновления для Xkeen удалена из cron"
         fi
         
         if [ -n "$info_content" ]; then
-            echo ""
-            echo -e "$info_content"
-            echo ""
+			echo -e "$info_content"
         fi
     fi
 }
@@ -170,15 +158,11 @@ logs_register_xkeen_status_info_console() {
     fi
     
     if [ -n "$info_content" ]; then
-        echo ""
-        echo -e "$info_content"
-        echo ""
+		echo -e "$info_content"
     fi
     
     if [ -n "$error_content" ]; then
-        echo ""
-        echo -e "$error_content"
-        echo ""
+		echo -e "$error_content"
     fi
 }
 
@@ -193,15 +177,11 @@ logs_register_xkeen_control_info_console() {
     fi
     
     if [ -n "$info_content" ]; then
-        echo ""
-        echo -e "$info_content"
-        echo ""
+		echo -e "$info_content"
     fi
     
     if [ -n "$error_content" ]; then
-        echo ""
-        echo -e "$error_content"
-        echo ""
+		echo -e "$error_content"
     fi
 }
 
@@ -218,15 +198,11 @@ logs_register_xkeen_list_info_console() {
     fi
 
     if [ -n "$error_content" ]; then
-        echo ""
-        echo -e "$error_content"
-        echo ""
+		echo -e "$error_content"
     fi
 
     if [ -n "$info_content" ]; then
-        echo ""
         echo -e "$info_content"
-        echo ""
     fi
 }
 
@@ -253,15 +229,11 @@ logs_delete_register_xkeen_info_console() {
     fi
 
     if [ -n "$error_content" ]; then
-        echo ""
         echo -e "$error_content"
-        echo ""
     fi
 
     if [ -n "$info_content" ]; then
-        echo ""
         echo -e "$info_content"
-        echo ""
     fi
 }
 
@@ -278,15 +250,32 @@ logs_register_xray_initd_info_console() {
     fi
 
     if [ -n "$info_content" ]; then
-        echo ""
         echo -e "$info_content"
-        echo ""
     fi
 
     if [ -n "$error_content" ]; then
-        echo ""
         echo -e "$error_content"
-        echo ""
+    fi
+}
+
+logs_register_xray_list_info_console() {
+    local info_content=""
+    local error_content=""
+	
+    cd "$register_dir/" || exit
+
+    if [ ! -f "xray.list" ]; then
+        error_content="     ${red}Ошибка:${reset} Файл xray.list не найден в директории «$register_dir/»"
+    else
+        info_content="     ${green}Успешно:${reset} Файл xray.list найден в директории «$register_dir/»"
+    fi
+
+    if [ -n "$error_content" ]; then
+		echo -e "$error_content"
+    fi
+
+    if [ -n "$info_content" ]; then
+        echo -e "$info_content"
     fi
 }
 
@@ -301,15 +290,11 @@ logs_register_xray_status_info_console() {
     fi
     
     if [ -n "$info_content" ]; then
-        echo ""
         echo -e "$info_content"
-        echo ""
     fi
     
     if [ -n "$error_content" ]; then
-        echo ""
         echo -e "$error_content"
-        echo ""
     fi
 }
 
@@ -326,15 +311,11 @@ logs_register_xray_control_info_console() {
     fi
     
     if [ -n "$info_content" ]; then
-        echo ""
         echo -e "$info_content"
-        echo ""
     fi
 
     if [ -n "$error_content" ]; then
-        echo ""
         echo -e "$error_content"
-        echo ""
     fi
 }
 
@@ -361,15 +342,11 @@ logs_delete_register_xray_info_console() {
     fi
 
     if [ -n "$info_content" ]; then
-        echo ""
         echo -e "$info_content"
-        echo ""
     fi
 
     if [ -n "$error_content" ]; then
-        echo ""
         echo -e "$error_content"
-        echo ""
     fi
 }
 
@@ -383,7 +360,7 @@ logs_install_cron_info_console() {
     if [ -f "$cron_file_path" ]; then
         if [ -n "$chose_all_cron_time" ] || [ -n "$chose_xkeen_cron_time" ] || [ -n "$chose_xray_cron_time" ] || [ -n "$chose_geosite_cron_time" ] || [ -n "$chose_geoip_cron_time" ]; then
             if [ -n "$chose_all_cron_time" ] || [ -n "$chose_geoip_cron_time" ]; then
-                if grep -q "$install_dir/xkeen.*-ugic" "$cron_file_path"; then
+                if grep -q "$install_dir/xkeen.*-ugi" "$cron_file_path"; then
                     task="GeoIP"
                     cron_entry=$(grep "$install_dir/xkeen.*-ugic" "$cron_file_path")
                     info_content="     ${green}Успешно:${reset} Запись для задачи автоматического обновления $task существует"
@@ -395,7 +372,7 @@ logs_install_cron_info_console() {
             fi
 
             if [ -n "$chose_all_cron_time" ] || [ -n "$chose_geosite_cron_time" ]; then
-                if grep -q "$install_dir/xkeen.*-ugsc" "$cron_file_path"; then
+                if grep -q "$install_dir/xkeen.*-ugs" "$cron_file_path"; then
                     task="GeoSite"
                     cron_entry=$(grep "$install_dir/xkeen.*-ugsc" "$cron_file_path")
                     info_content="${info_content}\n     ${green}Успешно:${reset} Запись для задачи автоматического обновления $task существует"
@@ -407,7 +384,7 @@ logs_install_cron_info_console() {
             fi
 
             if [ -n "$chose_all_cron_time" ] || [ -n "$chose_xkeen_cron_time" ]; then
-                if grep -q "$install_dir/xkeen.*-ukc" "$cron_file_path"; then
+                if grep -q "$install_dir/xkeen.*-uk" "$cron_file_path"; then
                     task="Xkeen"
                     cron_entry=$(grep "$install_dir/xkeen.*-ukc" "$cron_file_path")
                     info_content="${info_content}\n     ${green}Успешно:${reset} Запись для задачи автоматического обновления $task существует"
@@ -419,7 +396,7 @@ logs_install_cron_info_console() {
             fi
 
             if [ -n "$chose_all_cron_time" ] || [ -n "$chose_xray_cron_time" ]; then
-                if grep -q "$install_dir/xkeen.*-uxc" "$cron_file_path"; then
+                if grep -q "$install_dir/xkeen.*-ux" "$cron_file_path"; then
                     task="Xray"
                     cron_entry=$(grep "$install_dir/xkeen.*-uxc" "$cron_file_path")
                     info_content="${info_content}\n     ${green}Успешно:${reset} Запись для задачи автоматического обновления $task существует"
@@ -442,7 +419,7 @@ logs_install_cron_info_console() {
         fi
     fi
 
-    if [ -n "$info_content" ]; then
+if [ -n "$info_content" ]; then
         echo ""
         echo -e "$info_content"
         if [ -n "$last_line" ]; then
@@ -516,7 +493,7 @@ logs_install_geosite_info_console() {
             info_content="${info_content}\n     ${green}Успешно:${reset} GeoSite AntiFilter установлена"
         else
             error_content="${error_content}\n     ${red}Ошибка:${reset} Не удалось установить GeoSite базу AntiFilter"
-        fi
+			fi
     fi
 
     if [ "$install_v2fly_geosite" = true ]; then
@@ -590,48 +567,79 @@ logs_install_configs_info_console() {
     fi
 
     if [ -n "$error_content" ] || [ -n "$info_content" ]; then
-        echo ""
         if [ -n "$error_content" ]; then
             echo -e "$error_content"
         fi
         if [ -n "$info_content" ]; then
             echo -e "$info_content"
         fi
-        echo ""
     fi
 }
 
-logs_delete_cron_task_info_console() {
+logs_delete_cron_geosite_info_console() {
     local info_content=""
     
     if [ -f "$cron_dir/$cron_file" ]; then
-        if [ "$chose_all_cron_select" = true ] || [ "$chose_delete_all_cron_select" = true ]; then
-            grep -q "ugic\|ugdc\|uxc\|ukc" "$cron_dir/$cron_file"
-            if [ $? -eq 1 ]; then
-                info_content="     ${green}Успешно:${reset} Все задачи автоматического обновления удалены из cron"
-            fi
+        if grep -q "ugs" "$cron_dir/$cron_file"; then
+            error_content="     ${red}Ошибка:${reset} Задача автоматического обновления для GeoSite найдена в Cron\n"
         else
-            if [ "$chose_xkeen_cron_select" = true ]; then
-                logs_delete_cron_xkeen_info_xkeen_console
-            fi
-            
-            if [ "$chose_xray_cron_select" = true ]; then
-                logs_delete_cron_xray_info_xkeen_console
-            fi
-            
-            if [ "$chose_geosite_cron_select" = true ]; then
-                logs_delete_cron_geosite_info_xkeen_console
-            fi
-            
-            if [ "$chose_geoip_cron_select" = true ]; then
-                logs_delete_cron_geoip_info_xkeen_console
-            fi
+            info_content="     ${green}Успешно:${reset} Задача автоматического обновления для GeoSite не найдена Cron\n"
         fi
-
+        
         if [ -n "$info_content" ]; then
-            echo ""
             echo -e "$info_content"
-            echo ""
+        elif [ -n "$error_content" ]; then
+            echo -e "$error_content"
+        fi
+    fi
+}
+logs_delete_cron_xkeen_info_console() {
+    local info_content=""
+    
+    if [ -f "$cron_dir/$cron_file" ]; then
+        grep -q "uk" "$cron_dir/$cron_file"
+        if [ $? -eq 0 ]; then
+            error_content="     ${red}Ошибка:${reset} Задача автоматического обновления для Xkeen найдена в Cron\n"
+        else
+            info_content="     ${green}Успешно:${reset} Задача автоматического обновления для Xkeen не найдена в Cron\n"
+        fi
+        
+        if [ -n "$info_content" ]; then
+            echo -e "$info_content"
+        fi
+    fi
+}
+
+logs_delete_cron_xray_info_console() {
+    local info_content=""
+    
+    if [ -f "$cron_dir/$cron_file" ]; then
+        grep -q "ux" "$cron_dir/$cron_file"
+        if [ $? -eq 0 ]; then
+            error_content="     ${red}Ошибка:${reset} Задача автоматического обновления для Xray найдена в Cron\n"
+        else
+            info_content="     ${green}Успешно:${reset} Задача автоматического обновления для Xray не найдена в Cron\n"
+        fi
+        
+        if [ -n "$info_content" ]; then
+            echo -e "$info_content"
+        fi
+    fi
+}
+
+logs_delete_cron_geoip_info_console() {
+    local info_content=""
+    
+    if [ -f "$cron_dir/$cron_file" ]; then
+        grep -q "ugi" "$cron_dir/$cron_file"
+        if [ $? -eq 0 ]; then
+            error_content="     ${red}Ошибка:${reset} Задача автоматического обновления для GeoIP найдена в Cron\n"
+        else
+            info_content="     ${green}Успешно:${reset} Задача автоматического обновления для GeoIP не найдена в Cron\n"
+        fi
+        
+        if [ -n "$info_content" ]; then
+            echo -e "$info_content"
         fi
     fi
 }

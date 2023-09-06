@@ -7,7 +7,7 @@ author_donate() {
     echo "     1. Тинькофф"
     echo "     2. qiwi"
     echo "     3. Юmoney"
-    echo "     4. crypto"
+    echo "     4. Crypto"
 	echo
 
     read -p "  Ваш выбор: " choice

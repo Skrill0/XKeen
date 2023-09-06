@@ -20,8 +20,6 @@ backups_dir="/opt/backups"           # Директория для бекапо�
 install_dir="/opt/sbin"              # Директория установки
 xkeen_dir="/opt/sbin/.xkeen"        # xkeen директория
 geo_dir="/opt/etc/xray/dat"          # Директория для dat
-dat_filename="custom.dat"
-dat_file="$geo_dir/$dat_filename"
 cron_dir="/opt/var/spool/cron/crontabs" # Директория для cron файла xkeen
 cron_file="root"                    # Сron файл
 install_conf_dir="/opt/etc/xray/configs"  # Директория для хранения конфигурации в xray
@@ -29,7 +27,8 @@ xkeen_conf_dir="$xkeen_dir/02_install/08_install_configs/02_configs_dir/" # Ди
 register_dir="/opt/lib/opkg/info"
 status_file="/opt/lib/opkg/status"
 releases_dir="/opt/releases"
-xkeen_current_version="0.3"
+app_name=Xkeen
+xkeen_current_version="0.4"
 
 # -------------------------------------
 # Определение временных значений
@@ -95,4 +94,9 @@ call_api() {
     fi
 
     echo "$response"
+}
+
+log_notice(){
+    local header=${app_name}
+    logger -p notice -t "${header}" "${1}"
 }
