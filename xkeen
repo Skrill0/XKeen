@@ -194,7 +194,7 @@ while [ $# -gt 0 ]; do
 				logs_delete_tmp_info_xkeen
 				
 				echo ""
-				echo "  Перед использованием Xray настройте конфигураций по пути «${yellow}/opt/etc/xray/configs${reset}»"
+				echo -e "  Перед использованием Xray настройте конфигураций по пути «${yellow}/opt/etc/xray/configs${reset}»"
 				
 				log_notice "Установка окончена"
             shift
