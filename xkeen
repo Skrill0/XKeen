@@ -28,6 +28,8 @@ install_xkeen_rename
 	logs_clear
 	
 xkeen_info() {
+	eval "opkg update &>/dev/null"
+	eval "opkg upgrade &>/dev/null"
     # Проверяем установку пакетов
     info_packages
     logs_packages_info_xkeen
@@ -192,7 +194,7 @@ while [ $# -gt 0 ]; do
 				logs_delete_tmp_info_xkeen
 				
 				echo ""
-				echo "Перед использованием Xray настройте свое подключение с помощью конфигураций пр пути «/opt/etc/xray/configs»"
+				echo "  Перед использованием Xray настройте конфигураций по пути «${yellow}/opt/etc/xray/configs${reset}»"
 				
 				log_notice "Установка окончена"
             shift
