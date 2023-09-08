@@ -28,7 +28,7 @@ register_dir="/opt/lib/opkg/info"
 status_file="/opt/lib/opkg/status"
 releases_dir="/opt/releases"
 app_name=Xkeen
-xkeen_current_version="0.4"
+xkeen_current_version="0.5"
 
 # -------------------------------------
 # Определение временных значений

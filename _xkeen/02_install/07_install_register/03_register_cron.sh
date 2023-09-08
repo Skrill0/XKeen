@@ -31,7 +31,7 @@ cron_status() {
 # Функция для запуска cron
 start() {
     if cron_status; then
-        echo -e "  Cron ${red}уже запущен${reset}"
+        echo -e "  Cron ${yellow}уже запущен${reset}"
     else
         $cron_initd -L /dev/null
         echo -e "  Cron ${green}запущен${reset}"
@@ -44,7 +44,7 @@ stop() {
     if cron_status; then
         kill $(cat "$cron_pidfile")
         rm "$cron_pidfile" # Удаляем PID-файл после остановки
-        echo -e "  Cron ${green}остановлен${reset}"
+        echo -e "  Cron ${yellow}остановлен${reset}"
     else
         echo -e "  Cron ${red}не запущен${reset}"
     fi

@@ -43,6 +43,7 @@ register_xray_list() {
 /opt/etc/xray/configs/08_outbounds.json
 /opt/etc/xray/configs/09_policy.json
 /opt/etc/xray/configs/10_routing.json
+/opt/etc/xray/configs/11_fallbacks.json
 /opt/etc/xray/configs
 /opt/etc/xray
 /opt/etc/init.d/S24xray
@@ -66,6 +67,7 @@ register_xray_status() {
     HASH_08_outbounds=$(sha256sum "$install_conf_dir/08_outbounds.json" | awk '{print $1}')
     HASH_09_policy=$(sha256sum "$install_conf_dir/09_policy.json" | awk '{print $1}')
     HASH_10_routing=$(sha256sum "$install_conf_dir/10_routing.json" | awk '{print $1}')
+	HASH_11_fallbacks=$(sha256sum "$install_conf_dir/11_fallbacks.json" | awk '{print $1}')
 
     # Генерация новой записи
     new_entry="
@@ -86,6 +88,7 @@ Conffiles:
 /opt/etc/xray/configs/08_outbounds.json $HASH_08_outbounds
 /opt/etc/xray/configs/09_policy.json $HASH_09_policy
 /opt/etc/xray/configs/10_routing.json $HASH_10_routing
+/opt/etc/xray/configs/11_fallbacks.json $HASH_11_fallbacks
 Installed-Time: $(date +%s)"
 
     # Чтение существующего содержимого файла "status"

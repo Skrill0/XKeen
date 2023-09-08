@@ -88,7 +88,7 @@ logs_cpu_info_xkeen() {
         info_content="$info_content\t[info] Процессор поддерживается xkeen\n"
     else
         error_content="$error_content\t[error] Процессор не поддерживается xkeen\n"
-    fi
+		fi
 
     if [ -n "$error_content" ]; then
         echo "" >> "$xkeen_error_log"
@@ -1618,6 +1618,12 @@ logs_file_check_xray_xkeen() {
 		error_content="$error_content\t[error] Файл «10_routing.json» не найден\n"
 	else
 		info_content="$info_content\t[info] Файл «10_routing.json» найден\n"
+	fi
+	
+		if [ ! -f "/opt/etc/xray/configs/11_fallbacks.json" ]; then
+		error_content="$error_content\t[error] Файл «11_fallbacks» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «11_fallbacks.json» найден\n"
 	fi
 
 	if [ ! -f "/opt/etc/init.d/S24xray" ]; then
