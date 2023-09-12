@@ -33,10 +33,11 @@ xkeen_info() {
     # Проверяем установку пакетов
     info_packages
     logs_packages_info_xkeen
-
+	
     # Собираем необходимую информацию о процессоре
     info_cpu
     logs_cpu_info_xkeen
+	
 
     # Проверяем установку xray
     info_xray
@@ -82,9 +83,14 @@ while [ $# -gt 0 ]; do
 	
         -i)	# Запуск полного цикла установки
 			# Устанавливаем xray			
-			log_notice "Запуск полного цикла установки"
 			clear
+			log_notice "Запуск полного цикла установки"
 			xkeen_info
+			logs_cpu_info_console
+			if [ -z "$architecture" ]; then
+				exit 1
+			fi	
+
 				if [ "$xray_installed" = "not_installed" ]; then
 					download_xray
 					logs_download_xray_info_xkeen
@@ -93,8 +99,7 @@ while [ $# -gt 0 ]; do
 					
 					xray_installed="installed"
 				fi
-				
-			clear
+			
 			# Обновляем xray	
 				if [ "$info_compare_xray" = "update" ]; then
 					download_xray
@@ -105,8 +110,6 @@ while [ $# -gt 0 ]; do
 					xray_current_version="actual"
 				fi
 				
-			clear
-			logs_cpu_console
 			# Устанавливаем geoip
 				choose_geoip
 				logs_choose_geoip_info_xkeen
@@ -142,12 +145,11 @@ while [ $# -gt 0 ]; do
 					
 					install_cron
 					logs_install_cron_info_xkeen
-							
+			
+			sleep 1
 			clear
 			# Устанавливаем configs xray
 			echo ""
-				install_configs
-				logs_install_configs_info_xkeen
 								
 			# Удаляем предыдущие регистрации
 				delete_register_xkeen
@@ -155,6 +157,9 @@ while [ $# -gt 0 ]; do
 								
 				delete_register_xray
 				logs_delete_register_xray_info_xkeen
+				
+				install_configs
+				logs_install_configs_info_xkeen
 								
 			# Регистрируем xray
 				register_xray_list
@@ -1269,10 +1274,10 @@ while [ $# -gt 0 ]; do
 				
             shift
             ;;
-
+			
 		-h)	#Помощь			
 				echo
-				echo -e "     ${light_blue}xkeen${reset} — утилита для обеспечения работы Xray на роутерах Keenetic"
+				echo -e "  ${light_blue}Xkeen${reset} — утилита для обеспечения работы Xray на роутерах Keenetic"
 				echo 
 				echo -e "     Пример использования ключей запуска: «xkeen ${green}-x${reset}», где ${green}-x${reset} — выбранный Вами ключ."
 				echo "     Список доступных ключей запуска"
