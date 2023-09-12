@@ -1,5 +1,9 @@
 # Функция для установки файлов конфигурации xray
 install_configs() {
+	if [ ! -d "$install_conf_dir" ]; then
+        mkdir -p "$install_conf_dir"
+    fi
+	
     if [ -d "$xkeen_conf_dir" ]; then
         xkeen_files="$xkeen_conf_dir"/*.json
         files_to_replace=""

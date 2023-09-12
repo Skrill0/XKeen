@@ -6,7 +6,7 @@ register_xkeen_control() {
     cat << EOF > "$register_dir/xkeen.control"
 Package: xkeen
 Version: $xkeen_current_version
-Depends: jq, curl, lscpu
+Depends: jq, curl, lscpu, coreutils-uname
 Source: Skrill
 SourceName: xkeen
 Section: net
@@ -120,8 +120,7 @@ register_xkeen_list() {
 /opt/sbin/.xkeen/04_tools/04_tools_downloaders
 
 /opt/sbin/.xkeen/04_tools/00_tools_import.sh
-/opt/sbin/.xkeen/04_tools/05_tools_cpu-keyword.sh
-/opt/sbin/.xkeen/04_tools/06_tools_archive.sh
+/opt/sbin/.xkeen/04_tools/05_tools_archive.sh
 /opt/sbin/.xkeen/04_tools
 
 /opt/sbin/.xkeen/05_tests/00_tests_import.sh

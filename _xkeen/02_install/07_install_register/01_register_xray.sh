@@ -32,7 +32,7 @@ register_xray_list() {
 /opt/etc/xray/dat/geosite_v2fly.dat
 /opt/etc/xray/dat/geoip_antifilter.dat
 /opt/etc/xray/dat/geoip_v2fly.dat
-/opt/etc/dat
+/opt/etc/xray/dat
 /opt/etc/xray/configs/01_log.json
 /opt/etc/xray/configs/02_stats.json
 /opt/etc/xray/configs/03_dns.json

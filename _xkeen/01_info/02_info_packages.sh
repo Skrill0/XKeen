@@ -1,6 +1,6 @@
 # Функция для проверки наличия необходимых пакетов
 info_packages() {
-    package_name="$1"
+    local package_name="$1"
     
     # Проверяем, установлен ли пакет
     if opkg list-installed | grep -q "$package_name"; then
@@ -13,6 +13,10 @@ info_packages() {
 # Проверка наличия пакета "lscpu"
 info_packages "lscpu"
 info_packages_lscpu=$package_status
+
+# Проверка наличия пакета "coreutils-uname"
+info_packages "coreutils-uname"
+info_packages_uname=$package_status
 
 # Проверка наличия пакета "curl"
 info_packages "curl"
@@ -41,3 +45,4 @@ info_packages_libpthread=$package_status
 # Проверка наличия пакета "ca-bundle"
 info_packages "ca-bundle"
 info_packages_cabundle=$package_status
+

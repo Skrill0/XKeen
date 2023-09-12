@@ -12,7 +12,6 @@
 . "$xtools_dir/04_tools_downloaders/00_downloaders_import.sh"
 
 # Дополнительные инструменты
-. "$xtools_dir/05_tools_cpu-keyword.sh"
-. "$xtools_dir/06_tools_archive.sh"
+. "$xtools_dir/05_tools_archive.sh"
 
 

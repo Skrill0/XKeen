@@ -1,5 +1,6 @@
 # Функция для установки и обновления GeoSite
 install_geosite() {
+	mkdir -p "$geo_dir" || { echo "Ошибка: Не удалось создать директорию $geo_dir"; exit 1; }
     # Установка GeoSite V2Fly
     if [ "$install_v2fly_geosite" = true ]; then
         curl -L -o "$geo_dir/geosite_v2fly.dat" "https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat" > /dev/null 2>&1

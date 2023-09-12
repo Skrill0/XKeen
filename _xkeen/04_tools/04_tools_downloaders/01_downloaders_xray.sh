@@ -2,7 +2,7 @@
 
 download_xray() {
     # Получение URL для загрузки последней версии Xray с помощью cURL и jq
-    download_url=$(curl -s "$xray_api_url" | jq -r --arg keyword "$generated_keyword" '.assets[] | select(.browser_download_url | contains($keyword)) | .browser_download_url')
+    download_url=$(curl -s "$xray_api_url" | jq -r --arg arch "$architecture" '.assets[] | select(.name | endswith("linux-"+$arch + ".zip")) | .browser_download_url')
 
     # Если URL для загрузки доступен
     if [ -n "$download_url" ]; then

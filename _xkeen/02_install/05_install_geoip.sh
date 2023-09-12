@@ -1,5 +1,6 @@
 # Функция для установки и обновления GeoIP
 install_geoip() {
+	mkdir -p "$geo_dir" || { echo "Ошибка: Не удалось создать директорию $geo_dir"; exit 1; }
     # Установка GeoIP AntiFilter
     if [ "$install_antifilter_geoip" = true ]; then
         curl -L -o "$geo_dir/geoip_antifilter.dat" "https://github.com/schebotar/antifilter/releases/latest/download/geoip.dat" > /dev/null 2>&1

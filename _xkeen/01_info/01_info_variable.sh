@@ -28,7 +28,7 @@ register_dir="/opt/lib/opkg/info"
 status_file="/opt/lib/opkg/status"
 releases_dir="/opt/releases"
 app_name=Xkeen
-xkeen_current_version="0.5"
+xkeen_current_version="0.6"
 
 # -------------------------------------
 # Определение временных значений
@@ -44,8 +44,9 @@ current_datetime=$(date "+%d-%b-%y_%H-%M")
 # Определение url api
 # -------------------------------------
 
-xray_api_url="https://api.github.com/repos/yichya/openwrt-xray/releases/latest"  # url api для xray
-xkeen_api_url="https://api.github.com/repos/skrill0/xkeen/releases/latest"        # url api для xkeen
+xray_api_url_reserv="https://api.github.com/repos/yichya/openwrt-xray/releases/latest"  # url резервного api для xray
+xray_api_url="https://api.github.com/repos/XTLS/Xray-core/releases/latest"  # url api для xray
+xkeen_api_url="https://api.github.com/repos/skrill0/xkeen/releases/latest"	# url api для xkeen
 
 # -------------------------------------
 # Создание директорий и файлов
@@ -58,9 +59,7 @@ mkdir -p "$initd_dir" || { echo "Ошибка: Не удалось создат�
 mkdir -p "$pid_dir" || { echo "Ошибка: Не удалось создать директорию $pid_dir"; exit 1; }
 mkdir -p "$backups_dir" || { echo "Ошибка: Не удалось создать директорию $backups_dir"; exit 1; }
 mkdir -p "$install_dir" || { echo "Ошибка: Не удалось создать директорию $install_dir"; exit 1; }
-mkdir -p "$geo_dir" || { echo "Ошибка: Не удалось создать директорию $geo_dir"; exit 1; }
 mkdir -p "$cron_dir" || { echo "Ошибка: Не удалось создать директорию $cron_dir"; exit 1; }
-mkdir -p "$install_conf_dir" || { echo "Ошибка: Не удалось создать директорию $install_conf_dir"; exit 1; }
 
 # -------------------------------------
 # Определение файлов логов

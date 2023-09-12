@@ -9,6 +9,12 @@ logs_packages_info_xkeen() {
     else
         error_content="${error_content}    [error] lscpu не установлен\n"
     fi
+	
+	if [ "$info_packages_uname" = "installed" ]; then
+        info_content="${info_content}    [info] coreutils-uname установлен\n"
+    else
+        error_content="${error_content}    [error] coreutils-uname не установлен\n"
+    fi
 
     if [ "$info_packages_curl" = "installed" ]; then
         info_content="${info_content}    [info] curl установлен\n"
@@ -72,19 +78,13 @@ logs_cpu_info_xkeen() {
     local info_content=""
     local error_content=""
 
-    if [ -n "$info_model" ]; then
-        info_content="    [info] Модель: $info_model\n"
+    if [ -n "$architecture" ]; then
+        info_content="    [info] Набор инструкций: $architecture\n"
     else
-        error_content="    [error] Модель: Не удалось определить\n"
+        error_content="    [error] Набор инструкций: Не удалось определить\n"
     fi
 
-    if [ -n "$info_architecture" ]; then
-        info_content="$info_content\t[info] Архитектура: $info_architecture\n"
-    else
-        error_content="$error_content\t[error] Архитектура: Не удалось определить\n"
-    fi
-
-    if [ -n "$generated_keyword" ]; then
+    if [ -n "$architecture" ]; then
         info_content="$info_content\t[info] Процессор поддерживается xkeen\n"
     else
         error_content="$error_content\t[error] Процессор не поддерживается xkeen\n"
@@ -361,6 +361,10 @@ logs_install_packages_xkeen() {
         info_content="${info_content}\t[info] lscpu установлен"
     fi
     
+	if [ "$info_packages_uname" = "installed" ]; then
+			info_content="${info_content}\t[info] coreutils-uname установлен"
+    fi
+	
     if [ "$info_packages_curl" = "installed" ]; then
         if [ -n "$info_content" ]; then
             info_content="${info_content}\n"

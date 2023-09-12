@@ -1,7 +1,18 @@
 register_cron_initd() {
     local initd_file="$initd_dir/S05crond"
+    local s05crond_filename="${current_datetime}_S05crond"
 
-    local script_content='#!/bin/sh
+    # Проверяем наличие файла S05crond
+    if [ -e "$initd_file" ]; then
+        local backup_path="$backups_dir/$s05crond_filename"
+
+        # Перемещаем файл в каталог резервных копий с новым именем
+        mv "$initd_file" "$backup_path"
+
+        echo -e "Ваш файл «${green}S05crond${reset}» перемещен в каталог резерных копий «${yellow}$backup_path${reset}»"
+    fi
+
+	local script_content='#!/bin/sh
 ### Начало информации о службе
 # Краткое описание: Запуск / Остановка Cron
 ### Конец информации о службе

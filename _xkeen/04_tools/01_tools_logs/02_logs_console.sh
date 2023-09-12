@@ -1,12 +1,11 @@
 # Обратная связь в консоль
 
-logs_cpu_console() {
+logs_cpu_info_console() {
         echo "  Процессор"
-        echo "     Модель: $info_model"
-		echo "     Архитектура: $info_architecture"
+        echo "     Набор инструкций: $architecture"
 	
-    if [ -z "$generated_keyword" ]; then
-        echo -e "  Процессор ${red}$не поддерживается${reset} xkeen"
+    if [ -z "$architecture" ]; then
+        echo -e "  Процессор ${red}не поддерживается${reset} xkeen"
     else
         echo -e "  Процессор ${green}поддерживается${reset} xkeen"
     fi
