@@ -88,6 +88,10 @@ choose_geoip() {
                     chose_delete_geoip_antifilter_select=true
                     chose_delete_geoip_v2fly_select=true
                 fi
+			elif [ "$choice" -eq 3 ]; then
+                [ "$geo_exists_geoip_antifilter" != "installed" ] && install_antifilter_geoip=true || update_antifilter_geoip=true
+            elif [ "$choice" -eq 4 ]; then
+                [ "$geo_exists_geoip_v2fly" != "installed" ] && install_v2fly_geoip=true || update_v2fly_geoip=true
             fi
         done
 

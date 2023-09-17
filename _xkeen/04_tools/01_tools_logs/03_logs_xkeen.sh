@@ -1915,6 +1915,12 @@ logs_file_check_xkeen_xkeen() {
 	else
 		info_content="$info_content\t[info] Файл «10_routing.json» найден\n"
 	fi
+	
+	if [ ! -f "/opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir/11_fallbacks.json" ]; then
+		error_content="$error_content\t[error] Файл «11_fallbacks.json» не найден\n"
+	else
+		info_content="$info_content\t[info] Файл «11_fallbacks.json» найден\n"
+	fi
 
 	if [ ! -f "/opt/sbin/.xkeen/03_delete/00_delete_import.sh" ]; then
 		error_content="$error_content\t[error] Файл «00_delete_import.sh» не найден\n"
@@ -2072,16 +2078,10 @@ logs_file_check_xkeen_xkeen() {
 		info_content="$info_content\t[info] Файл «00_tools_import.sh» найден\n"
 	fi
 
-	if [ ! -f "/opt/sbin/.xkeen/04_tools/05_tools_cpu-keyword.sh" ]; then
-		error_content="$error_content\t[error] Файл «05_tools_cpu-keyword.sh» не найден\n"
-	else
-		info_content="$info_content\t[info] Файл «05_tools_cpu-keyword.sh» найден\n"
-	fi
-
 	if [ ! -f "/opt/sbin/.xkeen/04_tools/06_tools_archive.sh" ]; then
-		error_content="$error_content\t[error] Файл «06_tools_archive.sh» не найден\n"
+		error_content="$error_content\t[error] Файл «05_tools_archive.sh» не найден\n"
 	else
-		info_content="$info_content\t[info] Файл «06_tools_archive.sh» найден\n"
+		info_content="$info_content\t[info] Файл «05_tools_archive.sh» найден\n"
 	fi
 
 	if [ ! -f "/opt/sbin/.xkeen/05_tests/00_tests_import.sh" ]; then

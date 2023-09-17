@@ -119,10 +119,18 @@ xkeen_info_log="/opt/var/log/xkeen/info.log"
 xkeen_error_log="/opt/var/log/xkeen/error.log"
 
 path=/opt/bin:/opt/sbin:/sbin:/bin:/usr/sbin:/usr/bin
-xray_path=/opt/sbin/xray
+xray_path=xray
 xray_config=/opt/etc/xray/configs
 pidfile=/opt/var/run/xray.pid
+app_name=Xkeen
+
 export XRAY_LOCATION_ASSET=/opt/etc/xray/dat/
+
+# Функция для ведения журнала в роутере
+log_notice_init(){
+    local header=${app_name}
+    logger -p notice -t "${header}" "${1}"
+}
 
 # Функция для проверки статуса xray
 xray_status()
@@ -142,8 +150,10 @@ xray_status()
 # Функция для запуска xray
 start()
 {
+	log_notice_init "Инициирован запуск Xray"
   if xray_status; then
     echo -e "  Xray уже ${green}запущен${reset}"
+	log_notice_init "Не удалось запустить Xray, так как он уже запущен"
 	
 	echo "" >> "$xkeen_error_log"
 	echo "[start] Проверка статуса Xray" >> "$xkeen_error_log"
@@ -151,9 +161,10 @@ start()
 	echo "[end] Проверка статуса Xray выполнена" >> "$xkeen_error_log"
 	echo "" >> "$xkeen_error_log"
   else
-    $xray_path -confdir $xray_config &
+    $xray_path run -confdir $xray_config &
     echo $! > $pidfile
 	echo -e "  Xray ${green}запущен${reset}"
+	log_notice_init "Xray запущен"
 	
     echo "" >> "$xkeen_info_log"    
 	echo "[end] Проверка статуса Xray" >> "$xkeen_info_log"
@@ -166,10 +177,12 @@ start()
 # Функция для остановки xray
 stop()
 {
+	log_notice_init "Инициирована остановка Xray"
   if xray_status; then
     kill "$(cat $pidfile)"
     rm -f $pidfile
     echo -e "  Xray ${yellow}остановлен${reset}"
+	log_notice_init "Xray остановлен"
 	
     echo "" >> "$xkeen_info_log"
 	echo "[start] Проверка статуса Xray" >> "$xkeen_info_log"
@@ -178,6 +191,7 @@ stop()
 	echo "" >> "$xkeen_info_log"
   else
     echo -e "  Xray ${red}не запущен${reset}"
+	log_notice_init "Остановка Xray не удалась. Xray не был запущен"
 	
 	echo "" >> "$xkeen_error_log"
 	echo "[start] Проверка статуса Xray" >> "$xkeen_error_log"

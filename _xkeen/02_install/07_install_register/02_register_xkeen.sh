@@ -76,6 +76,7 @@ register_xkeen_list() {
 /opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir/08_outbounds.json
 /opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir/09_policy.json
 /opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir/10_routing.json
+/opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir/11_fallbacks.json
 
 /opt/sbin/.xkeen/02_install/07_install_register
 /opt/sbin/.xkeen/02_install/08_install_configs/02_configs_dir
@@ -143,7 +144,7 @@ register_xkeen_status() {
 	
 Package: xkeen
 Version: $xkeen_current_version
-Depends: jq, curl, lscpu
+Depends: jq, curl, lscpu, coreutils-uname
 Status: install user installed
 Architecture: $status_architecture
 Installed-Time: $(date +%s)"

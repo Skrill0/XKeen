@@ -1,6 +1,5 @@
 # Функция для получения информации о версии Xray
 info_version_xray() {
-    xray_current_version=""
 
     # Проверяем, установлен ли Xray
     if [ "$xray_installed" = "installed" ]; then
@@ -9,5 +8,5 @@ info_version_xray() {
     fi
 
     # Получаем версию Xray из удаленного источника (предположительно API)
-    xray_github_version=$(call_api "$xray_api_url" | jq -r '.tag_name' 2>/dev/null | sed 's/^v//')
+    xray_github_version=$(curl -s "$xray_api_url" | jq -r '.tag_name' | sed 's/v//')
 }

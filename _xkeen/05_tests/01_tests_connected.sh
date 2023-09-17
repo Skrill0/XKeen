@@ -21,4 +21,6 @@ tests_connection() {
     else
         echo -e "    ${red}Отсутствует${reset} интернет-соединение "
     fi
+	
+	break
 }
