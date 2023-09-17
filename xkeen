@@ -98,6 +98,7 @@ while [ $# -gt 0 ]; do
 					install_xray
 					
 					xray_installed="installed"
+					info_version_xray
 				fi
 			
 			# Обновляем xray	
@@ -107,7 +108,8 @@ while [ $# -gt 0 ]; do
 					
 					install_xray
 					
-					xray_current_version="actual"
+					info_compare_xray="actual"
+					info_version_xray
 				fi
 				
 			# Устанавливаем geoip
@@ -125,7 +127,7 @@ while [ $# -gt 0 ]; do
 				choose_geosite
 				logs_choose_geosite_info_xkeen
 				
-					delete_geosite
+				delete_geosite
 					logs_delete_geosite_info_xkeen
 										
 					install_geosite
@@ -150,7 +152,6 @@ while [ $# -gt 0 ]; do
 			clear
 			# Устанавливаем configs xray
 			echo ""
-								
 			# Удаляем предыдущие регистрации
 				delete_register_xkeen
 				logs_delete_register_xkeen_info_xkeen
@@ -160,7 +161,7 @@ while [ $# -gt 0 ]; do
 				
 				install_configs
 				logs_install_configs_info_xkeen
-								
+				
 			# Регистрируем xray
 				register_xray_list
 				logs_register_xray_list_info_xkeen
@@ -174,7 +175,6 @@ while [ $# -gt 0 ]; do
 				register_xray_initd
 				logs_register_xray_initd_info_xkeen
 				
-
 			# Регистрируем xkeen
 				register_xkeen_list
 				logs_register_xray_list_info_xkeen
@@ -889,7 +889,12 @@ while [ $# -gt 0 ]; do
 				
 				clear
 				echo -e "  Обновление регистрации ${yellow}Xkeen${reset}"	
-		
+				
+				info_cpu
+				logs_cpu_info_xkeen
+				info_version_xkeen
+				logs_version_xkeen_info_xkeen
+				
 				delete_register_xkeen				
 				logs_delete_register_xkeen_info_xkeen
 				logs_delete_register_xkeen_info_console
@@ -924,6 +929,14 @@ while [ $# -gt 0 ]; do
 				
 				clear
 				echo -e "  Обновление регистрации ${yellow}Xray${reset}"	
+				
+				info_xray
+				logs_xray_info_xkeen
+				info_cpu
+				logs_cpu_info_xkeen
+				info_version_xray
+				logs_version_xray_info_xkeen
+				
 				delete_register_xray
 				logs_delete_register_xray_info_xkeen
 				logs_delete_register_xray_info_console
@@ -932,7 +945,7 @@ while [ $# -gt 0 ]; do
 				sleep 1
 				echo ""
 				echo -e "  ${yellow}Проверка${reset}"
-				
+			
 				register_xray_list
 				logs_register_xray_list_info_xkeen
 				logs_register_xray_list_info_console
@@ -958,6 +971,10 @@ while [ $# -gt 0 ]; do
 				
 				clear
 				echo -e "  Переустановка конфигураций ${yellow}Xray${reset}"	
+				info_xray
+				logs_xray_info_xkeen
+				info_version_xray
+				logs_version_xray_info_xkeen
 				
 				install_configs
 				logs_install_configs_info_xkeen
@@ -1137,6 +1154,11 @@ while [ $# -gt 0 ]; do
 		-xb)	#Сделать резервную копию Xray
 				log_notice "Создание резервной копии Xray"
 				
+				info_xray
+				logs_xray_info_xkeen
+				info_version_xray
+				logs_version_xray_info_xkeen
+				
 				backup_xray				
 				
 				log_notice "Создание резервной копии Xray завершено"
@@ -1146,6 +1168,9 @@ while [ $# -gt 0 ]; do
 		-kb)	#Резервное копирование Xkeen
 				log_notice "Создание резервной копии Xkeen"
 				
+				info_version_xkeen
+				logs_version_xkeen_info_xkeen
+				
 				backup_xkeen		
 				
 				log_notice "Создание резервной копии Xkeen завершено"
@@ -1154,7 +1179,7 @@ while [ $# -gt 0 ]; do
 			
 		-cb)	#Сделать резервную конфигураций Xray
 				log_notice "Создание резервной копии конфигураций Xray"
-		
+				
 				backup_configs
 				
 				log_notice "Создание резервной копии конфигураций Xray завершено"
@@ -1219,6 +1244,8 @@ while [ $# -gt 0 ]; do
 			;;
 						
 		-v)	# Показать текущую версию
+				info_version_xray
+				logs_version_xray_info_xkeen
 				echo "  Текущая версия Xkeen $xkeen_current_version"
 				break
 			;;
@@ -1233,9 +1260,7 @@ while [ $# -gt 0 ]; do
             shift
             ;;
 			
-		-start)	# Запуск Xray
-				log_notice "Инициирован запуск Xray"
-			
+		-start)	# Запуск Xray	
 				eval "/opt/etc/init.d/S24xray start" 
 				sleep 2
 				exec "$SHELL"
@@ -1243,9 +1268,7 @@ while [ $# -gt 0 ]; do
             shift
             ;;	
 			
-		-stop)	# Остановка Xray
-				log_notice "Инициирована остановка Xray"
-				
+		-stop)	# Остановка Xray			
 				eval "/opt/etc/init.d/S24xray stop" 
 				sleep 2
 				exec "$SHELL"
@@ -1253,9 +1276,7 @@ while [ $# -gt 0 ]; do
             shift
             ;;		
 			
-		-restart)	# Перезапуск Xray
-				log_notice "Инициирован перезапуск Xray"
-				
+		-restart)	# Перезапуск Xray			
 				eval "/opt/etc/init.d/S24xray restart" 
 				sleep 2
 				exec "$SHELL"
@@ -1272,6 +1293,11 @@ while [ $# -gt 0 ]; do
 		-arch)	# Подготавливает текущую сборку для релиза
 				archive_xkeen
 				
+            shift
+            ;;
+						
+		-test)
+		
             shift
             ;;
 			
@@ -1342,7 +1368,7 @@ while [ $# -gt 0 ]; do
 				echo -e "     ${green}-cbr${reset} — Конфигурационные файлы Xray"
 				echo
 				echo -e "  ${yellow}Проверки${reset}"
-				echo -e "     ${green}-tpc${reset} — Соединение"
+				echo -e "     ${green}-tc${reset} — Соединение"
 				echo -e "     ${green}-tpx${reset} — Порты Xray"
 				echo -e "     ${green}-tfx${reset} — Файлы Xray"
 				echo -e "     ${green}-tfk${reset} — Файлы Xkeen"
