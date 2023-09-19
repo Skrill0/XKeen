@@ -92,6 +92,7 @@ while [ $# -gt 0 ]; do
 			fi	
 
 				if [ "$xray_installed" = "not_installed" ]; then
+					echo ""
 					download_xray
 					logs_download_xray_info_xkeen
 					
@@ -103,6 +104,7 @@ while [ $# -gt 0 ]; do
 			
 			# Обновляем xray	
 				if [ "$info_compare_xray" = "update" ]; then
+					echo ""
 					download_xray
 					logs_download_xray_info_xkeen
 					
@@ -113,6 +115,8 @@ while [ $# -gt 0 ]; do
 				fi
 				
 			# Устанавливаем geoip
+				sleep 2
+				clear
 				choose_geoip
 				logs_choose_geoip_info_xkeen
 				
@@ -121,6 +125,7 @@ while [ $# -gt 0 ]; do
 					
 					install_geoip
 					logs_install_geoip_info_xkeen
+				sleep 1
 					
 			clear
 			# Устанавливаем geosite
@@ -132,6 +137,7 @@ while [ $# -gt 0 ]; do
 										
 					install_geosite
 					logs_install_geosite_info_xkeen
+				sleep 1
 						
 			clear
 			# Настраиваем автоматические обновления
@@ -150,8 +156,6 @@ while [ $# -gt 0 ]; do
 			
 			sleep 1
 			clear
-			# Устанавливаем configs xray
-			echo ""
 			# Удаляем предыдущие регистрации
 				delete_register_xkeen
 				logs_delete_register_xkeen_info_xkeen
@@ -186,6 +190,7 @@ while [ $# -gt 0 ]; do
 				logs_register_xkeen_status_info_xkeen
 				
 			# Создаем init для cron
+				echo ""
 				eval "/opt/etc/init.d/S05crond stop" 2>/dev/null
 				[ -e "$initd_dir/S05crond" ] && rm -f "$initd_dir/S05crond"
 				
@@ -275,16 +280,19 @@ while [ $# -gt 0 ]; do
 					echo -e "  Обновление ${yellow}Xkeen${reset}"	
 					backup_xkeen	
 					
+					echo ""
 					download_xkeen
 					logs_download_xkeen_info_xkeen
 					
 					install_xkeen
 					echo ""
 					
+					echo -e "  Выполняется ${yellow}проверка удаления${reset} регистрации из Entware"
 					delete_register_xkeen
 					logs_delete_register_xkeen_info_xkeen
 					logs_delete_register_xkeen_info_console
 
+					echo ""
 					echo -e "  ${yellow}Выполняется${reset} регистрация"
 					sleep 1
 					echo ""
@@ -301,6 +309,9 @@ while [ $# -gt 0 ]; do
 					register_xkeen_status
 					logs_register_xkeen_status_info_xkeen
 					logs_register_xkeen_status_info_console
+					
+					register_cron_initd
+					register_xray_initd
 					
 					echo ""
 					echo -e "  Проверка регистрации ${green}завершена${reset}"
@@ -1263,7 +1274,8 @@ while [ $# -gt 0 ]; do
 		-start)	# Запуск Xray	
 				eval "/opt/etc/init.d/S24xray start" 
 				sleep 2
-				exec "$SHELL"
+				$SHELL
+
 				
             shift
             ;;	
@@ -1271,7 +1283,7 @@ while [ $# -gt 0 ]; do
 		-stop)	# Остановка Xray			
 				eval "/opt/etc/init.d/S24xray stop" 
 				sleep 2
-				exec "$SHELL"
+				$SHELL
 				
             shift
             ;;		
@@ -1279,7 +1291,7 @@ while [ $# -gt 0 ]; do
 		-restart)	# Перезапуск Xray			
 				eval "/opt/etc/init.d/S24xray restart" 
 				sleep 2
-				exec "$SHELL"
+				$SHELL
 				
             shift
             ;;				
