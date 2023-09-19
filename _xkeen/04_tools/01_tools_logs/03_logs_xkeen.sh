@@ -975,13 +975,13 @@ logs_delete_geoip_info_xkeen() {
     if [ -f "$geo_dir/geoip_antifilter.dat" ]; then
         info_content="${info_content}\t[info] Файл geoip_antifilter.dat отсутствует в директории «$geo_dir»\n"
     else
-        error_content="${error_content}\t[error] Файл geoip_antifilter.dat не удален\n"
+        error_content="${error_content}\t[error] Файл geoip_antifilter.dat не удален. Возможно его и не было в процессе установки\n"
     fi
 
     if [ -f "$geo_dir/geoip_v2fly.dat" ]; then
         info_content="${info_content}\t[info] Файл geoip_v2fly.dat отсутствует в директории «$geo_dir»"
     else
-        error_content="${error_content}\t[error] Файл geoip_v2fly.dat не удален"
+        error_content="${error_content}\t[error] Файл geoip_v2fly.dat не удален. Возможно его и не было в процессе установки"
     fi
 
     if [ -n "$error_content" ]; then
@@ -1008,19 +1008,19 @@ logs_delete_geosite_info_xkeen() {
     if [ -f "$geo_dir/geosite_antifilter.dat" ]; then
         info_content="${info_content}\t[info] Файл geosite_antifilter.dat отсутствует в директории «$geo_dir»\n"
     else
-        error_content="${error_content}\t[error] Файл geosite_antifilter.dat не удален\n"
+        error_content="${error_content}\t[error] Файл geosite_antifilter.dat не удален. Возможно его и не было в процессе установки\n"
     fi
 
     if [ -f "$geo_dir/geosite_antizapret.dat" ]; then
 		info_content="${info_content}\t[info] Файл geosite_antizapret.dat отсутствует в директории «$geo_dir»\n"
     else
-        error_content="${error_content}\t[error] Файл geosite_antizapret.dat не удален\n"
+        error_content="${error_content}\t[error] Файл geosite_antizapret.dat не удален. Возможно его и не было в процессе установки\n"
     fi
 
     if [ -f "$geo_dir/geosite_v2fly.dat" ]; then
 		info_content="${info_content}\t[info] Файл geosite_v2fly.dat отсутствует в директории «$geo_dir»"	
     else
-		error_content="${error_content}\t[error] Файл geosite_v2fly.dat не удален\n"
+		error_content="${error_content}\t[error] Файл geosite_v2fly.dat не удален. Возможно его и не было в процессе установки\n"
     fi
 
     if [ -n "$error_content" ]; then
@@ -2078,7 +2078,7 @@ logs_file_check_xkeen_xkeen() {
 		info_content="$info_content\t[info] Файл «00_tools_import.sh» найден\n"
 	fi
 
-	if [ ! -f "/opt/sbin/.xkeen/04_tools/06_tools_archive.sh" ]; then
+	if [ ! -f "/opt/sbin/.xkeen/04_tools/05_tools_archive.sh" ]; then
 		error_content="$error_content\t[error] Файл «05_tools_archive.sh» не найден\n"
 	else
 		info_content="$info_content\t[info] Файл «05_tools_archive.sh» найден\n"

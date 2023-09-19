@@ -1,20 +1,27 @@
 register_cron_initd() {
     local initd_file="$initd_dir/S05crond"
     local s05crond_filename="${current_datetime}_S05crond"
+    local required_script_version="0.3"
 
     # Проверяем наличие файла S05crond
     if [ -e "$initd_file" ]; then
-        local backup_path="$backups_dir/$s05crond_filename"
+        local current_content="$(cat "$initd_file")"
+        local script_version=$(grep 'version=' "$initd_file" | grep -o '[0-9.]\+')
 
-        # Перемещаем файл в каталог резервных копий с новым именем
-        mv "$initd_file" "$backup_path"
+        if [ "$script_version" != "$required_script_version" ]; then
+            local backup_path="$backups_dir/$s05crond_filename"
 
-        echo -e "Ваш файл «${green}S05crond${reset}» перемещен в каталог резерных копий «${yellow}$backup_path${reset}»"
+            # Перемещаем файл в каталог резервных копий с новым именем
+            mv "$initd_file" "$backup_path"
+
+            echo -e "  Ваш файл «${green}S05crond${reset}» перемещен в каталог резервных копий «${yellow}$backup_path${reset}»"
+        fi
     fi
 
-	local script_content='#!/bin/sh
+    local script_content='#!/bin/sh
 ### Начало информации о службе
 # Краткое описание: Запуск / Остановка Cron
+# version="0.3"  # Версия скрипта
 ### Конец информации о службе
 
 green="\033[32m"
@@ -23,19 +30,13 @@ yellow="\033[33m"
 reset="\033[0m" 
 
 cron_initd="/opt/sbin/crond"
-cron_pidfile="/opt/var/run/crond.pid" # Путь к файлу с PID процесса Cron
 
 # Функция для проверки статуса cron
 cron_status() {
-    if [ -e "$cron_pidfile" ]; then
-        local pid=$(cat "$cron_pidfile")
-        if [ -d "/proc/$pid" ]; then
-            return 0 # Процесс существует и работает
-        else
-            return 1 # Процесс не существует
-        fi
+    if ps | grep -v grep | grep -q "$cron_initd"; then
+        return 0 # Процесс существует и работает
     else
-        return 1 # PID-файл отсутствует
+        return 1 # Процесс не существует
     fi
 }
 
@@ -46,15 +47,13 @@ start() {
     else
         $cron_initd -L /dev/null
         echo -e "  Cron ${green}запущен${reset}"
-        echo $$ > "$cron_pidfile" # Сохраняем PID текущего процесса в файл
     fi
 }
 
 # Функция для остановки cron
 stop() {
     if cron_status; then
-        kill $(cat "$cron_pidfile")
-        rm "$cron_pidfile" # Удаляем PID-файл после остановки
+        killall -9 "crond"
         echo -e "  Cron ${yellow}остановлен${reset}"
     else
         echo -e "  Cron ${red}не запущен${reset}"
@@ -95,10 +94,8 @@ exit 0
 '
 
     # Создание или замена файла
-    if [ -e "$initd_file" ]; then
-        rm "$initd_file"
+    if [ "$script_version" != "$required_script_version" ]; then
+        echo -e "$script_content" > "$initd_file"
+        chmod +x "$initd_file"
     fi
-
-    echo -e "$script_content" > "$initd_file"
-    chmod +x "$initd_file"
 }

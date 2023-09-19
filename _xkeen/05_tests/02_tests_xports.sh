@@ -5,8 +5,8 @@ tests_ports_xray() {
     local listening_ports_udp
     local output="  Xray ${green}слушает${reset}"
     
-    listening_ports_tcp=$(netstat -ltunp | grep LISTEN | grep "$app_name" | grep "tcp")
-    listening_ports_udp=$(netstat -ltunp | grep LISTEN | grep "$app_name" | grep "udp")
+    listening_ports_tcp=$(netstat -ltunp | grep "$app_name" | grep "tcp")
+    listening_ports_udp=$(netstat -ltunp | grep "$app_name" | grep "udp")
 
     if [ -n "$listening_ports_tcp" ] || [ -n "$listening_ports_udp" ]; then
         local printed=false
