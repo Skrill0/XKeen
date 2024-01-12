@@ -4,8 +4,8 @@ set_param() {
     echo "$1" >> /etc/sysctl.conf > /dev/null 2>&1
 }
 
-if [ $(sysctl net.ipv4.tcp_available_congestion_control) != *'bbr'* ]; then
-    echo "tcp_bbr" > /etc/modules-load.d/modules.conf > /dev/null 2>&1
+if ! sysctl net.ipv4.tcp_available_congestion_control | grep -q 'bbr'; then
+    echo "tcp_bbr" > /etc/modules-load.d/modules.conf 2>/dev/null
 fi
 
 set_param "net.core.default_qdisc=fq"
@@ -31,5 +31,9 @@ set_param "net.ipv4.tcp_mtu_probing = 1"
 set_param "net.ipv4.tcp_slow_start_after_idle=0"
 
 sysctl -p > /dev/null 2>&1
+
+echo "  Оптимизация сервера \\033[32mвыполнена\\033[0m"
+echo "  Рекомендуется перезагрузить сервер командой «reboot»"
+
 
 rm -- "$0"
