@@ -6,6 +6,8 @@ set_param() {
 
 if ! sysctl net.ipv4.tcp_available_congestion_control | grep -q 'bbr'; then
     echo "tcp_bbr" > /etc/modules-load.d/modules.conf 2>/dev/null
+    echo "  Включен модуль bbr"
+    echo "  Перезагрузите сервер и повторите команды"
 fi
 
 set_param "net.core.default_qdisc=fq"
