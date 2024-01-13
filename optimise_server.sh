@@ -4,7 +4,7 @@ if ! sysctl net.ipv4.tcp_available_congestion_control | grep -q 'bbr'; then
     echo "tcp_bbr" > /etc/modules-load.d/modules.conf 2>/dev/null
     echo
     echo "  Включен модуль bbr"
-    echo "  Перезагрузите сервер и повторите команды"
+    echo "  Перезагрузите сервер и повторите команду «\\033[33m./optimise_server.sh\\033[0m»"
 
     exit 0
 fi
@@ -36,6 +36,6 @@ sysctl -p
 
 echo
 echo "  Оптимизация сервера \\033[32mвыполнена\\033[0m"
-echo "  Перезагрузите сервер командой «reboot»"
+echo "  Перезагрузите сервер командой «\\033[33mreboot\\033[0m»"
 
 rm -- "$0"
