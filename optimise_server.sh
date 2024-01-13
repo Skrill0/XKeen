@@ -2,8 +2,11 @@
 
 if ! sysctl net.ipv4.tcp_available_congestion_control | grep -q 'bbr'; then
     echo "tcp_bbr" > /etc/modules-load.d/modules.conf 2>/dev/null
+    echo
     echo "  Включен модуль bbr"
-    echo "  Перезагрузите сервер и повторите командs"
+    echo "  Перезагрузите сервер и повторите команды"
+
+    exit 0
 fi
 
 echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
@@ -31,6 +34,7 @@ echo "net.ipv4.tcp_slow_start_after_idle=0" >> /etc/sysctl.conf
 
 sysctl -p
 
+echo
 echo "  Оптимизация сервера \\033[32mвыполнена\\033[0m"
 echo "  Перезагрузите сервер командой «reboot»"
 
